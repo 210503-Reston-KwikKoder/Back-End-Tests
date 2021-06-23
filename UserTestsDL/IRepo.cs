@@ -1,0 +1,98 @@
+﻿using System;
+using System.Collections.Generic;
+using UserTestsModels;
+using System.Threading.Tasks;
+
+namespace UserTestsDL
+{
+    public interface IRepo
+    {
+        /// <summary>
+        /// Get a user based on username and email
+        /// </summary>
+        /// <param name="userName">username of user</param>
+        /// <param name="email">email of user</param>
+        /// /// <returns>User with the given username and email</returns>
+        Task<User> GetUser(string auth0id);
+        /// <summary>
+        /// Return a user based on id
+        /// </summary>
+        /// <param name="id">Id of requested yser</param>
+        /// <returns>User Associated Id</returns>
+        Task<User> GetUser(int id);
+        /// <summary>
+        /// Gets all users in the database
+        /// </summary>
+        /// <returns>List of Users</returns>
+        Task<List<User>> GetAllUsers();
+        /// <summary>
+        /// Adds a user to the database
+        /// </summary>
+        /// <param name="user">user to add</param>
+        /// <returns>user aded</returns>
+        Task<User> AddUser(User user);
+        /// <summary>
+        /// Adds a category to the database
+        /// </summary>
+        /// <param name="cat">category to be added</param>
+        /// <returns>category added to the database</returns>
+        Task<Category> AddCategory(Category cat);
+        /// <summary>
+        /// Retrieves all categories currently in the database
+        /// </summary>
+        /// <returns>List of categories found</returns>
+        Task<List<Category>> GetAllCategories();
+        /// <summary>
+        /// Gets a category by it's Octokit.Language int name
+        /// </summary>
+        /// <param name="name">name of category requested</param>
+        /// <returns>Category requested</returns>
+        Task<Category> GetCategoryByName(int name);
+        /// <summary>
+        /// Versatile method to update a user's stats for a given category
+        /// </summary>
+        /// <param name="categoryid">category user participated in</param>
+        /// <param name="userid">user id related to user</param>
+        /// <returns>userstat updated</returns>
+        Task<UserStat> AddUpdateStats(int categoryid, int userid, UserStat userStat);
+        /// <summary>
+        /// Method that returns a user statistics for a given category, null if not found
+        /// </summary>
+        /// <param name="categoryId">category id for stat</param>
+        /// <param name="userId">user id for stat</param>
+        /// <returns>Userstat if found null otherwise</returns>
+        Task<UserStat> GetSatUserCat(int categoryId, int userId);
+        /// <summary>
+        /// Method that adds a test to the database
+        /// </summary>
+        /// <param name="typeTest">TypeTest to add</param>
+        /// <returns>test added</returns>
+        Task<TypeTest> AddTest(TypeTest typeTest);
+        /// <summary>
+        /// Method that returns all stats for a given user
+        /// </summary>
+        /// <param name="userId">Id for user whose stats are being requested</param>
+        /// <returns>List of stats if found, null otherwise</returns>
+        Task<List<UserStatCatJoin>> GetUserStats(int userId);
+        Task<Category> GetCategoryById(int id);
+        /// <summary>
+        /// Gets a userstat by the user stat id
+        /// </summary>
+        /// <param name="id">id of userstat to get</param>
+        /// <returns>userstat if found null otherwise</returns>
+        //Task<UserStat> GetUserStatById(int id);
+        /// <summary>
+        /// Gets the relevant type tests for a given user Id
+        /// </summary>
+        /// <param name="id">User Id to get tests for</param>
+        /// <returns>List of type tests user has taken</returns>
+        Task<List<TypeTest>> GetTypeTestsForUser(int userId);
+        Task<UserStat> GetUserStatById(int id);
+        /// <summary>
+        /// Updates the 
+        /// </summary>
+        /// <param name="u"></param>
+        /// <returns></returns>
+        Task<User> UpdateUser(User u);
+    }
+}
