@@ -13,6 +13,9 @@ using System.Security.Claims;
 using RestSharp;
 using Newtonsoft.Json;
 using Serilog;
+using System.Net.Http;
+using System.Text;
+using Microsoft.Extensions.Options;
 
 namespace UserTestsREST.Controllers
 {
@@ -25,13 +28,15 @@ namespace UserTestsREST.Controllers
         private readonly IUserStatBL _userStatService;
         private readonly IUserBL _userBL;
         private readonly ICategoryBL _categoryBL;
-        public TypeTestController(ISnippets snip, IUserStatBL _userstat, IUserBL userBL, ICategoryBL categoryBL)
+        private readonly ApiSettings _ApiSettings;
+        public TypeTestController(ISnippets snip, IUserStatBL _userstat, IUserBL userBL, ICategoryBL categoryBL, IOptions<ApiSettings> settings)
 
         {
             _userBL = userBL;
             _snippetsService = snip;
             _userStatService = _userstat;
             _categoryBL = categoryBL;
+            _ApiSettings = settings.Value;
         }
         /// <summary>
         /// GET /api/TypeTest
@@ -85,10 +90,68 @@ namespace UserTestsREST.Controllers
             Category category1 = await _categoryBL.GetCategory(typeTest.categoryId);
             UserTestsModels.User user1 = await _userBL.GetUser(UserID);
             TypeTest testToBeInserted = await _userStatService.SaveTypeTest(typeTest.numberoferrors,typeTest.numberofcharacters,typeTest.timetakenms,typeTest.wpm,typeTest.date);
-            bool typeTestFlag =  (await _userStatService.AddTestUpdateStat(user1.Id, category1.Id, testToBeInserted) == null);
-            if (typeTestFlag) return BadRequest();
-            else return Ok();
+            List<UserStat> userStats;
+            try
+            {
+                userStats =
+                await _userStatService.AddTestUpdateStat(user1.Id, category1.Id, testToBeInserted);
+                dynamic AppBearerToken = GetApplicationToken();
+                var client = new RestClient($"https://kwikkoder.us.auth0.com/api/v2/users/{UserID}");
+                var request = new RestRequest(Method.GET);
+                request.AddHeader("authorization", "Bearer " + AppBearerToken.access_token);
+                IRestResponse restResponse = await client.ExecuteAsync(request);
+                dynamic deResponse = JsonConvert.DeserializeObject(restResponse.Content);
+                List<LBModel> lbModelsToSend = new List<LBModel>();
+                LBModel lbModel = new LBModel();
+                try
+                {
+                    lbModel.UserName = deResponse.username;
+                    lbModel.Name = deResponse.name;
+                    lbModel.CatID = typeTest.categoryId;
+                    lbModel.AuthId = UserID;
+                    lbModel.AverageWPM = userStats[0].AverageWPM;
+                    lbModel.AverageAcc = userStats[0].AverageAccuracy;
+                }
+                catch (Exception e) { Log.Information(e.Message); }
+                lbModelsToSend.Add(lbModel);
+                LBModel avglbModel = new LBModel();
+                try
+                {
+                    avglbModel.UserName = deResponse.username;
+                    avglbModel.Name = deResponse.name;
+                    avglbModel.CatID = -2;
+                    avglbModel.AuthId = UserID;
+                    avglbModel.AverageWPM = userStats[1].AverageWPM;
+                    avglbModel.AverageAcc = userStats[1].AverageAccuracy;
+                }
+                catch (Exception e) { Log.Information(e.Message); }
+                lbModelsToSend.Add(avglbModel);
+                var objAsJson = JsonConvert.SerializeObject(lbModelsToSend);
+                var content = new StringContent(objAsJson, Encoding.UTF8, "application/json");
+                var _httpClient = new HttpClient();
+                var result = await _httpClient.PutAsync("", content);
+            }
+
+            catch (Exception e)
+            {
+                Log.Error("Bad Request received in TypeTest Post");
+                Log.Error(e.StackTrace);
+                return BadRequest();
+            }
+            
+            
+            return Ok();
         }
-        
+        private dynamic GetApplicationToken()
+        {
+            var client = new RestClient("https://kwikkoder.us.auth0.com/oauth/token");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("content-type", "application/json");
+            request.AddParameter("application/json", _ApiSettings.authString, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            Log.Information("Response: {0}", response.Content);
+            return JsonConvert.DeserializeObject(response.Content);
+        }
+
     }
 }

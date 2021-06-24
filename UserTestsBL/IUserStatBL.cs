@@ -14,8 +14,8 @@ namespace UserTestsBL
         /// <param name="userId">userId of test taker</param>
         /// <param name="categoryId">id of the category</param>
         /// <param name="typeTest">Test user has taken</param>
-        /// <returns>user stat of test taker</returns>
-        Task<UserStat> AddTestUpdateStat(int userId, int categoryId, TypeTest typeTest);
+        /// <returns>user stat of test taker and the average user stat</returns>
+        Task<List<UserStat>>AddTestUpdateStat(int userId, int categoryId, TypeTest typeTest);
 
         /// <summary>
         /// Method that gets the user's stats and averages them out into overall stat

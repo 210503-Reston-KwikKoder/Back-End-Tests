@@ -83,7 +83,7 @@ namespace GACDTests
                 typeTest.NumberOfWords = 3;
                 typeTest.WPM = 30;
                 typeTest.TimeTaken = 5;
-                UserStat ust = await userStatBL.AddTestUpdateStat(1, 1, typeTest);
+                UserStat ust = (await userStatBL.AddTestUpdateStat(1, 1, typeTest))[0];
                 Assert.NotNull(ust);
             }
         }
@@ -112,7 +112,7 @@ namespace GACDTests
                 await userStatBL.AddTestUpdateStat(1, 1, testToBeInserted);
                 TypeTest testToBeInserted1 = await userStatBL.SaveTypeTest(1, 50, 100, 100, DateTime.Now);
                 avgExpected += testToBeInserted1.WPM/2;
-                Double actual = (await userStatBL.AddTestUpdateStat(1, 1, testToBeInserted)).AverageWPM;
+                Double actual = (await userStatBL.AddTestUpdateStat(1, 1, testToBeInserted))[0].AverageWPM;
                 Assert.Equal(avgExpected, actual);
             }
         }
@@ -224,7 +224,7 @@ namespace GACDTests
                 typeTest.NumberOfWords = 3;
                 typeTest.WPM = 30;
                 typeTest.TimeTaken = 5;
-                UserStat ust = await userStatBL.AddTestUpdateStat(1, 1, typeTest);
+                UserStat ust = (await userStatBL.AddTestUpdateStat(1, 1, typeTest))[0];
                 int expected = 1;
                 int actual = (await userStatBL.GetTypeTestsForUser(1)).Count;
                 Assert.Equal(expected,actual);

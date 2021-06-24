@@ -17,7 +17,7 @@ namespace UserTestsBL
             _repo = new Repo(context);
         }
 
-        public async Task<UserStat> AddTestUpdateStat(int userId, int categoryId, TypeTest typeTest)
+        public async Task<List<UserStat>> AddTestUpdateStat(int userId, int categoryId, TypeTest typeTest)
         {
            UserStat userStat;
             try
@@ -66,7 +66,10 @@ namespace UserTestsBL
                 User u = await _repo.GetUser(userId);
                 u.Revapoints += (int)(typeTest.WPM * intermediateCalc);
                 await _repo.UpdateUser(u);
-                return userStat;
+                List<UserStat> userStats = new List<UserStat>();
+                userStats.Add(userStat);
+                userStats.Add(usAvg);
+                return userStats;
 
 
             }catch (Exception e)
