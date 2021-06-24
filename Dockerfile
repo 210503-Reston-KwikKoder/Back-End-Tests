@@ -7,7 +7,7 @@ COPY UserTestsREST/*.csproj ./UserTestsREST/
 COPY UserTestsBL/*.csproj ./UserTestsBL/
 COPY UserTestsDL/*.csproj ./UserTestsDL/
 COPY UserTestsModels/*.csproj ./UserTestsModels/
-COPY UserTestsTests/*.csproj ./UserTestsTests/
+COPY UTTests/*.csproj ./UTTests/
 
 RUN cd UserTestsREST && dotnet restore
 
