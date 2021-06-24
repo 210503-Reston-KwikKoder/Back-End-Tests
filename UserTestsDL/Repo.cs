@@ -281,6 +281,7 @@ namespace UserTestsDL
                 return await Task.Run(() =>
                 {
                     _context.Users.Update(u);
+                    _context.SaveChanges();
                     return u;
                 });
             }
