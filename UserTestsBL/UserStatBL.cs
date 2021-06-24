@@ -38,12 +38,30 @@ namespace UserTestsBL
                 numWords = numWords / 5;
                 double numErrors = (double)typeTest.NumberOfErrors;
                 numErrors = numErrors / 5;
-                double intermediateCalc = (numWords - numErrors) / numWords;
+                double intermediateCalc = numWords / (numWords+numErrors);
                 userStat.AverageAccuracy = ((userStat.AverageAccuracy * userStat.NumberOfTests) + intermediateCalc) / (userStat.NumberOfTests + 1);
                 userStat.AverageWPM = ((userStat.AverageWPM * userStat.NumberOfTests) + typeTest.WPM) / (userStat.NumberOfTests + 1);
                 userStat.NumberOfTests += 1;
                 userStat = await _repo.AddUpdateStats(categoryId, userId, userStat);
+                await _repo.AddCategory(new Category() { Name = -2 });
+                UserStat usAvg = new UserStat();
+                Category avgCat = await _repo.GetCategoryByName(-2);
+                if (await _repo.GetSatUserCat(avgCat.Id, userId) != null) usAvg = await _repo.GetSatUserCat(avgCat.Id, userId);
+                else
+                {
+                    usAvg = new UserStat();
+                    usAvg.AverageAccuracy = 0;
+                    usAvg.AverageWPM = 0;
+                    usAvg.NumberOfTests = 0;
+                    usAvg.TotalTestTime = 0;
+
+                }
+                usAvg.TotalTestTime += typeTest.TimeTaken;
+                usAvg.NumberOfTests += 1;
+                usAvg.AverageAccuracy += (intermediateCalc * typeTest.TimeTaken) / usAvg.TotalTestTime;
+                usAvg.AverageWPM += (typeTest.WPM * typeTest.TimeTaken) / usAvg.TotalTestTime;
                 typeTest.UserStatId = userStat.Id;
+                await _repo.AddUpdateStats(avgCat.Id, userId, usAvg);
                 await _repo.AddTest(typeTest);
                 User u = await _repo.GetUser(userId);
                 u.Revapoints += (int)(typeTest.WPM * intermediateCalc);
