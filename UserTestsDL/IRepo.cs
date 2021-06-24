@@ -94,5 +94,6 @@ namespace UserTestsDL
         /// <param name="u"></param>
         /// <returns></returns>
         Task<User> UpdateUser(User u);
+        Task<List<Tuple<int, List<TypeTest>>>> GetTypeTestForUserByCategory(int userId);
     }
 }
