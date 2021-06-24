@@ -35,6 +35,11 @@ jobs:
         run: dotnet build --configuration Release --no-restore
       - name: Test
         run: dotnet test --no-restore --verbosity normal
+        
+  sonarcloud:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: SonarScanner for .NET 5
         uses: highbyte/sonarscan-dotnet@2.0
         with:
