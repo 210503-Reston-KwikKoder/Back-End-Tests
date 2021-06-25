@@ -29,6 +29,7 @@ namespace UserTestsREST.Controllers
         private readonly IUserBL _userBL;
         private readonly ICategoryBL _categoryBL;
         private readonly ApiSettings _ApiSettings;
+        public TypeTestController(ISnippets snip){ _snippetsService = snip;}
         public TypeTestController(ISnippets snip, IUserStatBL _userstat, IUserBL userBL, ICategoryBL categoryBL, IOptions<ApiSettings> settings)
 
         {
