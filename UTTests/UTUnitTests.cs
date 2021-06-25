@@ -37,8 +37,6 @@ namespace GACDTests
             }
         }
 
-<<<<<<< HEAD
-=======
         [Fact]
         public async Task GetAllUsersShouldReturnAList()
         {
@@ -63,25 +61,6 @@ namespace GACDTests
         //Then
         }
 
-
-
-
-
-
-        public async Task VerifyAddUserShouldThrowExceptionAsync()
-        {
-            using (var context = new UserTestDBContext(options))
-            {
-                IUserBL userBL = new UserBL(context);
-                User user = new User();
-                user.Auth0Id = null;
-                var test = await userBL.AddUser(user);
-                Assert.Equal(test, null);
-            }
-        }
-
-
->>>>>>> main
         /// <summary>
         /// Makes sure that Categories can be added
         /// </summary>
