@@ -33,7 +33,6 @@ namespace UTTests
             }
         }
 
-
          [Fact]
         public async Task VerifyGetCategoryByIdShouldReturnNull()
         {
@@ -67,6 +66,8 @@ namespace UTTests
                 var test = await _repo.GetUserStats(-1);
                 List<UserStatCatJoin> expected = new List<UserStatCatJoin>();
                 Assert.Equal(test, expected);
+                Assert.True(test.Count == 0);
+                Assert.Empty(test);
             }
         }  
 
@@ -83,6 +84,18 @@ namespace UTTests
         }  
 
         [Fact]
+        public async Task BL_VerifyGetUserStatsShouldReturnListOfUserStatCatJoin()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                IUserStatBL _bl = new UserStatBL(context);
+                var target = 1;
+                var test = await _bl.GetUserStats(target);
+                Assert.True(test.Count == 1);
+            }
+        }  
+
+        [Fact]
         public async Task VerifyGetUserStatsByIdShouldReturnUserStat()
         {
             using (var context = new UserTestDBContext(options))
@@ -93,6 +106,49 @@ namespace UTTests
                 Assert.True(test.Id == target);
             }
         } 
+
+        [Fact]
+        public async Task BL_VerifyGetUserStatsByIdShouldReturnUserStat()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                IUserStatBL _bl = new UserStatBL(context);
+                var target = 1;
+                var test = await _bl.GetUserStatByUSId(target);
+                Assert.True(test.Id == target);
+            }
+        } 
+
+        [Fact]
+        public async Task VerifyAddTestUpdateStatShouldReturnListOfUserStat()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                IUserStatBL _bl = new UserStatBL(context);
+                var userId = -1;
+                var categoryId = -1;
+                TypeTest typeTest = new TypeTest()
+                {
+                    Id = 1
+                };
+                var test = await _bl.AddTestUpdateStat(userId, categoryId, typeTest);
+                List<UserStat> expected = null;
+                Assert.Equal(expected, test);
+            }
+        }
+
+        [Fact]
+        public async Task VerifyGetAvgUserStatShouldReturnUserStat()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                IUserStatBL _bl = new UserStatBL(context);
+                var target = 1;
+                var test = await _bl.GetAvgUserStat(target);
+                var expected = 50;
+                Assert.Equal(expected, test.AverageWPM);
+            }
+        }
 
         [Fact]
         public async Task VerifyGetUserStatsByIdShouldReturnNull()
@@ -117,6 +173,8 @@ namespace UTTests
                 var test = await _repo.GetTypeTestsForUser(target);
                 List<TypeTest> expected = new List<TypeTest>();
                 Assert.Equal(test, expected);
+                Assert.True(test.Count == 0);
+                Assert.Empty(test);
             }
         } 
 
@@ -128,6 +186,19 @@ namespace UTTests
                 IRepo _repo = new Repo(context);
                 var target = -1;
                 var test = await _repo.GetTypeTestForUserByCategory(target);
+                List<Tuple<int, List<TypeTest>>> expected = new List<Tuple<int, List<TypeTest>>>();
+                Assert.Equal(test, expected);
+            }
+        }
+
+        [Fact]
+        public async Task BL_VerifyGetTypeTestForUserByCategoryShoudReturnEmptyList()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                IUserStatBL _bl = new UserStatBL(context);
+                var target = -1;
+                var test = await _bl.GetTypeTestForUserByCategory(target);
                 List<Tuple<int, List<TypeTest>>> expected = new List<Tuple<int, List<TypeTest>>>();
                 Assert.Equal(test, expected);
             }
@@ -146,6 +217,18 @@ namespace UTTests
             }
         }
 
+        [Fact]
+        public async Task BL_VerifyGetTypeTestForUserByCategoryShoudReturnListOfTuple()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                IUserStatBL _bl = new UserStatBL(context);
+                var target = 1;
+                 List<Tuple<int, List<TypeTest>>> test = await _bl.GetTypeTestForUserByCategory(target);
+                Assert.True(test.Count == 1);
+                Assert.True(test[0].Item2.Count == 1);
+            }
+        }
 
         private void Seed()
         {
@@ -164,6 +247,9 @@ namespace UTTests
                     new UserStat
                     {
                         Id = 1,
+                        TotalTestTime = 1,
+                        AverageAccuracy = 1,
+                        AverageWPM = 50,
                         UserStatCatJoin = new UserStatCatJoin
                         {
                             UserId = 1,
@@ -178,13 +264,6 @@ namespace UTTests
                         }
                     }
                 );
-                // context.UserStatCatJoins.Add(
-                //     new UserStatCatJoin {
-                //         UserId = 1,
-                //         userStatId = 1
-
-                //     }
-                // );
                 context.Categories.AddRange(
                     new Category
                     {
@@ -228,6 +307,22 @@ namespace UTTests
                 context.Database.EnsureCreated();
             }
         }
+
+        [Fact]
+        public async Task VerifyGetAllUsersShouldReturnEmptyList()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                IRepo _repo = new Repo(context);
+                context.Database.EnsureDeleted();
+                var test = await _repo.GetAllUsers();
+                List<User> expected = new List<User>();
+                Assert.Equal(test, expected);
+                Assert.True(test.Count == 0);
+                Assert.Empty(test);
+                context.Database.EnsureCreated();
+            }
+        }  
 
     }
 }
