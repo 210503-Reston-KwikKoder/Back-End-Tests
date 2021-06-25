@@ -35,6 +35,37 @@ namespace GACDTests
                 Assert.Equal(expected, userCount);
             }
         }
+
+        [Fact]
+        public async Task GetAllUsersShouldReturnAList()
+        {
+        //Given
+        using(var context=new UserTestDBContext(options)){
+
+            IUserBL userBL=new UserBL(context);
+            User user1=new User();
+            user1.Auth0Id="Auth0Id001";
+            User user2=new User();
+            user2.Auth0Id="Auth0Id002";
+
+            userBL.AddUser(user1);
+            userBL.AddUser(user2);
+            int size=(await  userBL.GetUsers()).Count;
+
+            Assert.True(size==2);
+        }
+        
+        //When
+        
+        //Then
+        }
+
+
+
+
+
+
+
         /// <summary>
         /// Makes sure that Categories can be added
         /// </summary>
