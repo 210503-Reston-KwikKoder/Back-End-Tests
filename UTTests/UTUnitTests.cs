@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Serilog;
 using UserTestsModels;
+using System.Collections.Generic;
 
 namespace GACDTests
 {
@@ -59,24 +60,6 @@ namespace GACDTests
         
         //Then
         }
-
-
-
-
-
-
-        public async Task VerifyAddUserShouldThrowExceptionAsync()
-        {
-            using (var context = new UserTestDBContext(options))
-            {
-                IUserBL userBL = new UserBL(context);
-                User user = new User();
-                user.Auth0Id = null;
-                var test = await userBL.AddUser(user);
-                Assert.Equal(test, null);
-            }
-        }
-
 
         /// <summary>
         /// Makes sure that Categories can be added
