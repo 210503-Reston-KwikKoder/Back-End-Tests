@@ -146,7 +146,9 @@ namespace GACDTests
                 user.Auth0Id = "test";
                 await userBL.AddUser(user);
                 Assert.Null(await userBL.AddUser(user));
+                
             }
+            
         }
         /// <summary>
         /// Makes sure we are able to get a user by their id
