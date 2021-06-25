@@ -48,6 +48,12 @@ namespace UserTestsBL
         /// <param name="userId">Id of user to find type tests for</param>
         /// <returns>List of TypeTests, or empty if not found</returns>
         Task<List<TypeTest>> GetTypeTestsForUser(int userId);
-        
+        /// <summary>
+        /// Gets a list of tuples for each category with a list of tests in that category
+        /// </summary>
+        /// <param name="userId">Id for user to get tests for</param>
+        /// <returns>List of tuples for each category with a list of tests in that category, null on error</returns>
+        Task<List<Tuple<int, List<TypeTest>>>> GetTypeTestForUserByCategory(int userId);
+
     }
 }

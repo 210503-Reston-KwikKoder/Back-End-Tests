@@ -95,6 +95,42 @@ namespace UserTestsREST.Controllers
                 return NotFound();
             }
         }
+        [HttpGet("tests/all")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<IEnumerable<TestStatCatOutput>>>> GetAllTests()
+        {
+            try
+            {
+                User u = new User();
+                u.Auth0Id = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                u = await _userBL.GetUser(u.Auth0Id);
+                List<Tuple<int, List<TypeTest>>> listTypeTests = await _userStatBL.GetTypeTestForUserByCategory(u.Id);
+                List<List<TestStatCatOutput>> typeTestOutputs = new List<List<TestStatCatOutput>>();
+                foreach (Tuple<int, List<TypeTest>> tuple in listTypeTests)
+                {
+                    List<TestStatCatOutput> testsPerCat = new List<TestStatCatOutput>();
+                    foreach (TypeTest t in tuple.Item2)
+                    {
+                        TestStatCatOutput typeTestOutput = new TestStatCatOutput();
+                        typeTestOutput.date = t.Date;
+                        typeTestOutput.numberofcharacters = t.NumberOfWords;
+                        typeTestOutput.numberoferrors = t.NumberOfErrors;
+                        typeTestOutput.timetakenms = t.TimeTaken;
+                        typeTestOutput.wpm = t.WPM;
+                        typeTestOutput.Category = tuple.Item1;
+                        testsPerCat.Add(typeTestOutput);
+                    }
+                    typeTestOutputs.Add(testsPerCat);
+                }
+                return typeTestOutputs;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+                Log.Error("Unable to retrive tests");
+                return NotFound();
+            }
+        }
 
         /// <summary>
         /// GET /api/UserStat
