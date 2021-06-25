@@ -10,6 +10,7 @@ namespace UserTestsModels
     {
         public User() { }
         public int  Id { get; set; }
+        [required]
         public string Auth0Id { get; set; }
         public int Revapoints { get; set; }
     }

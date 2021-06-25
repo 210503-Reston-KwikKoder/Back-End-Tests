@@ -10,6 +10,7 @@ namespace UserTestsModels
     {
         public Category() { }
         public int Id { get; set; }
+        [required]
         public int Name { get; set; }
     }
 }
