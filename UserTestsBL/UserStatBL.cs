@@ -109,7 +109,10 @@ namespace UserTestsBL
             
         }
 
-
+        public async Task<List<Tuple<int, List<TypeTest>>>> GetTypeTestForUserByCategory(int userId)
+        {
+            return await _repo.GetTypeTestForUserByCategory(userId);
+        }
 
         public async Task<List<TypeTest>> GetTypeTestsForUser(int userId)
         {

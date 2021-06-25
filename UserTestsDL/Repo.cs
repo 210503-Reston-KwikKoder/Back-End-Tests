@@ -291,5 +291,46 @@ namespace UserTestsDL
                 return null;
             }
         }
+
+        public async Task<List<Tuple<int, List<TypeTest>>>> GetTypeTestForUserByCategory(int userId)
+        {
+            try
+            {
+                List<UserStatCatJoin> userStatCats = await(from uscj in _context.UserStatCatJoins
+                                              where uscj.UserId == userId
+                                              select uscj).ToListAsync();
+                List<Tuple<int, List<TypeTest>>> returnTuples = new List<Tuple<int, List<TypeTest>>>();
+                foreach ( UserStatCatJoin userStatCatJoin in userStatCats)
+                {
+                    try
+                    {
+                        Category cat = await (from c in _context.Categories
+                                              where c.Id == userStatCatJoin.CategoryId
+                                              select c).SingleAsync();
+                        if(cat.Name != -2)
+                        {
+                            List<TypeTest> typeTestsForStat = (from test in _context.TypeTests
+                                                               where test.UserStatId == userStatCatJoin.UserStatId
+                                                               orderby test.Date ascending
+                                                               select test).ToList();
+                            returnTuples.Add(Tuple.Create(cat.Name, typeTestsForStat));
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Log.Fatal(e.Message);
+                        Log.Fatal(e.StackTrace);
+                    }
+
+                }
+                return returnTuples;
+
+            }
+            catch(Exception e)
+            {
+                Log.Error(e.StackTrace);
+                return null;
+            }
+        }
     }
 }

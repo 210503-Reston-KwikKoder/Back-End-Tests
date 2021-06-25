@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace UserTestsREST.DTO
 {
-    public class CompInput: TypeTestInput
+    public class TestStatCatOutput:TestStatOutput
     {
-        public CompInput() { }
-        public int compId { get; set; }
+        public TestStatCatOutput() { }
+        public int Category { get; set; }
     }
 }
