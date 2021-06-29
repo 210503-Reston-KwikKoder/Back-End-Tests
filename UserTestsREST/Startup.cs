@@ -58,7 +58,7 @@ namespace UserTestsREST
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
-            services.AddDbContext<UserTestDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GACDB")));
+            services.AddDbContext<UserTestDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BETDB")));
             services.Configure<ApiSettings>(Configuration.GetSection("ApiSettings"));
             services.AddScoped<ISnippets, Snippets>();
             services.AddScoped<IUserStatBL, UserStatBL>();

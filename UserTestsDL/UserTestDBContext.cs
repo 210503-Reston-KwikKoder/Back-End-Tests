@@ -20,10 +20,12 @@ namespace UserTestsDL
         public DbSet<TypeTest> TypeTests { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
- 
-            modelBuilder.Entity<User>(entity => {
-            entity.HasIndex(e => e.Auth0Id).IsUnique();
-                });
+            modelBuilder.Entity<User>()
+                .Property(user => user.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<User>()
+                .HasIndex(user => user.Auth0Id)
+                .IsUnique();
             modelBuilder.Entity<Category>()
                 .Property(cat => cat.Id)
                 .ValueGeneratedOnAdd();

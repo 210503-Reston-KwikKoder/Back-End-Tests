@@ -9,23 +9,20 @@ namespace UserTestsModels
 {
     public class User
     {
-        private int _id;
         public User() { }
-
+        private int _id;
         /// <summary>
-        /// Set Validation: Id should not less or equal to 0
+        /// Makes sure Id is non-negative
         /// </summary>
-        /// <value></value>
-        public int  Id
-        { 
+        public int Id
+        {
             get { return _id; }
-            set 
+            set
             {
                 if (value <= 0) throw new ValidationException("Id should not less or equal to 0");
                 _id = value;
             }
         }
-
         [Required]
         public string Auth0Id { get; set; }
         public int Revapoints { get; set; }

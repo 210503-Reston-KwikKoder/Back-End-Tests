@@ -1,23 +1,49 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace UserTestsDL.Migrations
 {
-    public partial class migation6242021 : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Auth0Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Revapoints = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserStats",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    AverageWPM = table.Column<double>(type: "double precision", nullable: false),
-                    AverageAccuracy = table.Column<double>(type: "double precision", nullable: false),
-                    NumberOfTests = table.Column<int>(type: "integer", nullable: false),
-                    TotalTestTime = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AverageWPM = table.Column<double>(type: "float", nullable: false),
+                    AverageAccuracy = table.Column<double>(type: "float", nullable: false),
+                    NumberOfTests = table.Column<int>(type: "int", nullable: false),
+                    TotalTestTime = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,14 +54,14 @@ namespace UserTestsDL.Migrations
                 name: "TypeTests",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserStatId = table.Column<int>(type: "integer", nullable: false),
-                    NumberOfErrors = table.Column<int>(type: "integer", nullable: false),
-                    NumberOfWords = table.Column<int>(type: "integer", nullable: false),
-                    TimeTaken = table.Column<int>(type: "integer", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    WPM = table.Column<double>(type: "double precision", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserStatId = table.Column<int>(type: "int", nullable: false),
+                    NumberOfErrors = table.Column<int>(type: "int", nullable: false),
+                    NumberOfWords = table.Column<int>(type: "int", nullable: false),
+                    TimeTaken = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    WPM = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,9 +78,9 @@ namespace UserTestsDL.Migrations
                 name: "UserStatCatJoins",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "integer", nullable: false),
-                    UserStatId = table.Column<int>(type: "integer", nullable: false),
-                    CategoryId = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserStatId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,6 +105,13 @@ namespace UserTestsDL.Migrations
                 column: "UserStatId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Users_Auth0Id",
+                table: "Users",
+                column: "Auth0Id",
+                unique: true,
+                filter: "[Auth0Id] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserStatCatJoins_UserId",
                 table: "UserStatCatJoins",
                 column: "UserId");
@@ -93,10 +126,16 @@ namespace UserTestsDL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
                 name: "TypeTests");
 
             migrationBuilder.DropTable(
                 name: "UserStatCatJoins");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "UserStats");
