@@ -77,7 +77,7 @@ namespace UserTestsREST
             })
             .ConfigureAppConfiguration(configuration =>
             {
-               
+                configuration.AddJsonFile("secrets/appsettings.json", optional: true, reloadOnChange: true);
                 configuration.AddJsonFile(
                     $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
                     optional: false);
