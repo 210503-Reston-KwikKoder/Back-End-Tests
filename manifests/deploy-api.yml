@@ -16,13 +16,6 @@ spec:
         - name: tests-api
           image: kwikkoder/tests-api:${IMAGE_TAG}
           # reference to my dockerhub repo image
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 250m
-              memory: 256Mi
           env:
           - name: ASPNETCORE_ENVIRONMENT
             value: "Development"
