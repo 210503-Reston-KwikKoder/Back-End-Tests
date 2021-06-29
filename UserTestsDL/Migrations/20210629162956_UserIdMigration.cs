@@ -2,7 +2,7 @@
 
 namespace UserTestsDL.Migrations
 {
-    public partial class migation6232021 : Migration
+    public partial class UserIdMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
