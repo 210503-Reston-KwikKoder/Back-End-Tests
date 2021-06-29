@@ -43,7 +43,7 @@ namespace UserTestsREST
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile(
-                    $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
+                    $"appsettings.Development.json",
                     optional: false)
                 .Build();
 
@@ -79,7 +79,7 @@ namespace UserTestsREST
             {
                 configuration.AddJsonFile("secrets/appsettings.json", optional: true, reloadOnChange: true);
                 configuration.AddJsonFile(
-                    $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
+                    $"appsettings.Development.json",
                     optional: false);
             })
             .UseSerilog();
