@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-WORKDIR /app 
+WORKDIR /app
 
 COPY *.sln .
 
@@ -21,3 +21,4 @@ WORKDIR /app
 
 COPY --from=build /app/publish ./
 CMD ["dotnet", "UserTestsREST.dll"]
+EXPOSE 80
