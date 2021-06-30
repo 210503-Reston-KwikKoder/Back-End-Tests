@@ -39,9 +39,9 @@ jobs:
         uses: highbyte/sonarscan-dotnet@2.0
         with:
           # The key of the SonarQube project
-          sonarProjectKey: 210503-Reston-KwikKoder_Back-End-UserTests
+          sonarProjectKey: 210503-Reston-KwikKoder_Back-End-Tests
           # The name of the SonarQube project
-          sonarProjectName: Back-End-UserTests
+          sonarProjectName: Back-End-Tests
           # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
           sonarOrganization: 210503-reston-kwikkoder
           dotnetTestArguments: --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
