@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -65,6 +66,7 @@ namespace UserTestsREST
             catch (System.Exception ex)
             {
                 Log.Fatal($"Failed to start {Assembly.GetExecutingAssembly().GetName().Name}", ex);
+                Log.Information(ex.ToString());
                 throw;
             }
         }
