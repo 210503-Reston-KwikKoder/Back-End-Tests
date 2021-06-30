@@ -58,8 +58,10 @@ namespace UserTestsBL
                 }
                 usAvg.TotalTestTime += typeTest.TimeTaken;
                 usAvg.NumberOfTests += 1;
-                usAvg.AverageAccuracy += (intermediateCalc * typeTest.TimeTaken) / usAvg.TotalTestTime;
-                usAvg.AverageWPM += (typeTest.WPM * typeTest.TimeTaken) / usAvg.TotalTestTime;
+                if (usAvg.AverageAccuracy != 0) usAvg.AverageAccuracy = ((intermediateCalc * typeTest.TimeTaken) / usAvg.TotalTestTime) + ((usAvg.AverageAccuracy * (usAvg.TotalTestTime - typeTest.TimeTaken)) / usAvg.TotalTestTime);
+                else usAvg.AverageAccuracy = intermediateCalc;
+                if (usAvg.AverageWPM != 0) usAvg.AverageWPM = ((typeTest.WPM * typeTest.TimeTaken) / usAvg.TotalTestTime) + ((usAvg.AverageWPM * (usAvg.TotalTestTime - typeTest.TimeTaken)) / usAvg.TotalTestTime);
+                else usAvg.AverageWPM = typeTest.WPM;
                 typeTest.UserStatId = userStat.Id;
                 await _repo.AddUpdateStats(avgCat.Id, userId, usAvg);
                 await _repo.AddTest(typeTest);
