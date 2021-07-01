@@ -130,7 +130,7 @@ namespace UserTestsREST.Controllers
                 var objAsJson = JsonConvert.SerializeObject(lbModelsToSend);
                 var content = new StringContent(objAsJson, Encoding.UTF8, "application/json");
                 var _httpClient = new HttpClient();
-                var result = await _httpClient.PutAsync("http://kwikkoder.com/lb/api/LB", content);
+                var result = await _httpClient.PutAsync("http://20.69.69.228/lb/api/LB", content);
             }
 
             catch (Exception e)
