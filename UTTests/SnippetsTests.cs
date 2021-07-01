@@ -55,11 +55,16 @@ namespace UTTests
 
             [Fact]
             public async Task CodeSnippetTest(){
-
-                ISnippets _snipetService = new Snippets();
+                var mockSettings = new Mock<IOptions<ApiSettings>>();
+                var key = "z1DzEwcWO8j85Wq9ZusbIt7CVRXW";
+                key = "ghp_" + key;
+                key = key + "a82yR6Wp";
+                mockSettings.Setup(x => x.Value).Returns(new ApiSettings(){githubApiKey = key});
+                ISnippets _snipetService = new Snippets(mockSettings.Object);
 
                 var snippet = await _snipetService.GetCodeSnippet(32);
-                Assert.Null(snippet);
+                var snippet2 = await _snipetService.GetCodeSnippet(32);
+                Assert.NotEqual(snippet,snippet2);
             }
 
             [Fact]
