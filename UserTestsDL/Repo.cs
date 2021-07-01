@@ -200,6 +200,16 @@ namespace UserTestsDL
                 uStatInDB.AverageAccuracy = userStat.AverageAccuracy;
                 uStatInDB.NumberOfTests = userStat.NumberOfTests;
                 uStatInDB.TotalTestTime = userStat.TotalTestTime;
+                uStatInDB.Wins = userStat.Wins;
+                uStatInDB.Losses = userStat.Losses;
+                double winner = uStatInDB.Wins;
+                double loser = uStatInDB.Losses;
+                if(uStatInDB.Losses != 0)
+                {
+                    uStatInDB.WLRatio =uStatInDB.Wins/ uStatInDB.Losses;
+                }
+                uStatInDB.TotalTestTime = userStat.TotalTestTime;
+                uStatInDB.TotalTestTime = userStat.TotalTestTime;
                 await _context.SaveChangesAsync();
                 return uStatInDB;
             }
