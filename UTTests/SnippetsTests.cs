@@ -1,3 +1,4 @@
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System;
 using System.Text.Json;
@@ -41,14 +42,29 @@ namespace UTTests
                 Assert.NotNull(test);
             }
 
+            [Fact]
             public async Task TestEx(){
                 
                 var mockService = new Mock<ISnippets>();
-                mockService.Setup(x => x.GetRandomQuote()).Throws( new Exception());
+                mockService.Setup(x => x.GetCodeSnippet(It.IsAny<int>())).Throws( new Exception());
                 ISnippets _snipetService = mockService.Object;
 
 
-                await Assert.ThrowsAsync<Exception>(async()=> {await _snipetService.GetRandomQuote();});
+                await Assert.ThrowsAsync<Exception>(async()=> {await _snipetService.GetCodeSnippet(0);});
+            }
+
+            [Fact]
+            public async Task CodeSnippetTest(){
+                var mockSettings = new Mock<IOptions<ApiSettings>>();
+                var key = "z1DzEwcWO8j85Wq9ZusbIt7CVRXW";
+                key = "ghp_" + key;
+                key = key + "a82yR6Wp";
+                mockSettings.Setup(x => x.Value).Returns(new ApiSettings(){githubApiKey = key});
+                ISnippets _snipetService = new Snippets(mockSettings.Object);
+
+                var snippet = await _snipetService.GetCodeSnippet(32);
+                var snippet2 = await _snipetService.GetCodeSnippet(32);
+                Assert.NotEqual(snippet,snippet2);
             }
 
             [Fact]
@@ -62,6 +78,17 @@ namespace UTTests
 
                 Assert.Equal("asdf", i);
 
+            }
+
+            [Fact]
+            public async Task TestExRandom(){
+                
+                var mockService = new Mock<ISnippets>();
+                mockService.Setup(x => x.GetRandomQuote()).Throws( new Exception());
+                ISnippets _snipetService = mockService.Object;
+
+
+                await Assert.ThrowsAsync<Exception>(async()=> {await _snipetService.GetRandomQuote();});
             }
     }
 }
