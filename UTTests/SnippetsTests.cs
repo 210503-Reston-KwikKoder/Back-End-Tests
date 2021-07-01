@@ -58,8 +58,8 @@ namespace UTTests
 
                 ISnippets _snipetService = new Snippets();
 
-                var snippet = _snipetService.GetCodeSnippet(32);
-                Assert.NotNull(snippet);
+                var snippet = await _snipetService.GetCodeSnippet(32);
+                Assert.Null(snippet);
             }
 
             [Fact]
