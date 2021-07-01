@@ -30,7 +30,7 @@ namespace UserTestsBL
                     userStat.AverageWPM = 0;
                     userStat.NumberOfTests = 0;
                     userStat.TotalTestTime = 0;
-             
+                  
                 }
 
                 userStat.TotalTestTime += typeTest.TimeTaken;
@@ -54,7 +54,7 @@ namespace UserTestsBL
                     usAvg.AverageWPM = 0;
                     usAvg.NumberOfTests = 0;
                     usAvg.TotalTestTime = 0;
-
+                    
                 }
                 usAvg.TotalTestTime += typeTest.TimeTaken;
                 usAvg.NumberOfTests += 1;

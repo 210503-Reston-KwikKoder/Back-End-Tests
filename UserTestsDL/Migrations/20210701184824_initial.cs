@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace UserTestsDL.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,7 +26,7 @@ namespace UserTestsDL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Auth0Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Auth0Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Revapoints = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -43,7 +43,11 @@ namespace UserTestsDL.Migrations
                     AverageWPM = table.Column<double>(type: "float", nullable: false),
                     AverageAccuracy = table.Column<double>(type: "float", nullable: false),
                     NumberOfTests = table.Column<int>(type: "int", nullable: false),
-                    TotalTestTime = table.Column<int>(type: "int", nullable: false)
+                    TotalTestTime = table.Column<int>(type: "int", nullable: false),
+                    Wins = table.Column<int>(type: "int", nullable: false),
+                    Losses = table.Column<int>(type: "int", nullable: false),
+                    WLRatio = table.Column<double>(type: "float", nullable: false),
+                    WinStreak = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -108,8 +112,7 @@ namespace UserTestsDL.Migrations
                 name: "IX_Users_Auth0Id",
                 table: "Users",
                 column: "Auth0Id",
-                unique: true,
-                filter: "[Auth0Id] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserStatCatJoins_UserId",

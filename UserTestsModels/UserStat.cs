@@ -57,6 +57,14 @@ namespace UserTestsModels
             }
         }
 
+        public int Wins { get; set; }
+
+        public int Losses { get; set; }
+        
+        public double WLRatio { get; set; }
+
+        public int WinStreak { get; set; }
+        
         public UserStatCatJoin UserStatCatJoin { get; set; }
         public List<TypeTest> TypeTests { get; set; }
     }
