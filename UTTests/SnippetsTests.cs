@@ -1,5 +1,9 @@
+using System.Runtime.CompilerServices;
+using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using Moq;
 using UserTestsBL;
 using Xunit;
 
@@ -28,6 +32,36 @@ namespace UTTests
                     TestMaterial test1 = await _snipetService.GetRandomQuote();
                     TestMaterial test2 = await _snipetService.GetRandomQuote();
                     Assert.NotEqual(test1, test2);            
+            }
+
+            [Fact]
+            public async Task CheckConstructor(){
+                ISnippets _snipetService = new Snippets(this.s);
+                TestMaterial test = await _snipetService.GetRandomQuote();
+                Assert.NotNull(test);
+            }
+
+            public async Task TestEx(){
+                
+                var mockService = new Mock<ISnippets>();
+                mockService.Setup(x => x.GetRandomQuote()).Throws( new Exception());
+                ISnippets _snipetService = mockService.Object;
+
+
+                await Assert.ThrowsAsync<Exception>(async()=> {await _snipetService.GetRandomQuote();});
+            }
+
+            [Fact]
+            public async Task GetAuthStringTest(){
+                var mockSettings = new Mock<IOptions<ApiSettings>>();
+                mockSettings.Setup(x => x.Value).Returns(new ApiSettings(){authString = "asdf"});
+
+                ISnippets _snipetService = new Snippets(mockSettings.Object);
+
+                var i = await _snipetService.GetAuth0String();
+
+                Assert.Equal("asdf", i);
+
             }
     }
 }
