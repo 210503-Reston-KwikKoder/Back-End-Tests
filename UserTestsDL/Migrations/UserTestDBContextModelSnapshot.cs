@@ -74,6 +74,7 @@ namespace UserTestsDL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Auth0Id")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Revapoints")
@@ -82,8 +83,7 @@ namespace UserTestsDL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Auth0Id")
-                        .IsUnique()
-                        .HasFilter("[Auth0Id] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -101,10 +101,22 @@ namespace UserTestsDL.Migrations
                     b.Property<double>("AverageWPM")
                         .HasColumnType("float");
 
+                    b.Property<int>("Losses")
+                        .HasColumnType("int");
+
                     b.Property<int>("NumberOfTests")
                         .HasColumnType("int");
 
                     b.Property<int>("TotalTestTime")
+                        .HasColumnType("int");
+
+                    b.Property<double>("WLRatio")
+                        .HasColumnType("float");
+
+                    b.Property<int>("WinStreak")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Wins")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

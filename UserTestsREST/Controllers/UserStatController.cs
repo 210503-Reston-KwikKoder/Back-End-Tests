@@ -156,5 +156,12 @@ namespace UserTestsREST.Controllers
             }
         }
         
+        [HttpPut]
+        [Authorize]
+        public async Task<ActionResult> TestingResults(TypeTestInput testing, bool won, string auth, int win_streak)
+        {
+
+            return NoContent();
+        }
     }
 }
