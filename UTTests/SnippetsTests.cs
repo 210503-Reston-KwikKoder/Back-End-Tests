@@ -1,3 +1,4 @@
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System;
 using System.Text.Json;
@@ -44,11 +45,11 @@ namespace UTTests
             public async Task TestEx(){
                 
                 var mockService = new Mock<ISnippets>();
-                mockService.Setup(x => x.GetRandomQuote()).Throws( new Exception());
+                mockService.Setup(x => x.GetCodeSnippet(It.IsAny<int>())).Throws( new Exception());
                 ISnippets _snipetService = mockService.Object;
 
 
-                await Assert.ThrowsAsync<Exception>(async()=> {await _snipetService.GetRandomQuote();});
+                await Assert.ThrowsAsync<Exception>(async()=> {await _snipetService.GetCodeSnippet(0);});
             }
 
             [Fact]
@@ -62,6 +63,17 @@ namespace UTTests
 
                 Assert.Equal("asdf", i);
 
+            }
+
+            [Fact]
+            public async Task TestExRandom(){
+                
+                var mockService = new Mock<ISnippets>();
+                mockService.Setup(x => x.GetRandomQuote()).Throws( new Exception());
+                ISnippets _snipetService = mockService.Object;
+
+
+                await Assert.ThrowsAsync<Exception>(async()=> {await _snipetService.GetRandomQuote();});
             }
     }
 }
