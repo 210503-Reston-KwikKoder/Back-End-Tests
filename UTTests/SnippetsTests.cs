@@ -54,6 +54,15 @@ namespace UTTests
             }
 
             [Fact]
+            public async Task CodeSnippetTest(){
+
+                ISnippets _snipetService = new Snippets();
+
+                var snippet = _snipetService.GetCodeSnippet(32);
+                Assert.NotNull(snippet);
+            }
+
+            [Fact]
             public async Task GetAuthStringTest(){
                 var mockSettings = new Mock<IOptions<ApiSettings>>();
                 mockSettings.Setup(x => x.Value).Returns(new ApiSettings(){authString = "asdf"});
