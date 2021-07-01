@@ -42,6 +42,7 @@ namespace UTTests
                 Assert.NotNull(test);
             }
 
+            [Fact]
             public async Task TestEx(){
                 
                 var mockService = new Mock<ISnippets>();
