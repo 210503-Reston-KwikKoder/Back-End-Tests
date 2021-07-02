@@ -206,7 +206,7 @@ namespace UserTestsDL
                 double loser = uStatInDB.Losses;
                 if(uStatInDB.Losses != 0)
                 {
-                    uStatInDB.WLRatio =uStatInDB.Wins/ uStatInDB.Losses;
+                    uStatInDB.WLRatio =winner/(winner+loser);
                 }
                 uStatInDB.TotalTestTime = userStat.TotalTestTime;
                 uStatInDB.TotalTestTime = userStat.TotalTestTime;
