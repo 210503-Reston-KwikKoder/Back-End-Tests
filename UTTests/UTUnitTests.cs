@@ -273,7 +273,47 @@ namespace GACDTests
                 Assert.Equal(expected,actual);
             }
         }
-       
+        [Fact]
+        public async Task UpdateWLShouldWork()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                User user = new User();
+                user.Auth0Id = "test";
+                IUserBL userBL = new UserBL(context);
+                ICategoryBL categoryBL = new CategoryBL(context);
+                IUserStatBL userStatBL = new UserStatBL(context);
+                Category category = new Category();
+                category.Name = 1;
+                await categoryBL.AddCategory(category);
+                await userBL.AddUser(user);
+                Double avgExpected;
+                TypeTest testToBeInserted = await userStatBL.SaveTypeTest(1, 50, 100, 100, DateTime.Now);
+                List<UserStat> userStats = await userStatBL.AddTestUpdateStat(1, 1, testToBeInserted);
+                Assert.NotNull(userStatBL.UpdateWL(userStats,true, 5));
+            }
+        }
+        [Fact]
+        public async Task UpdateWLShouldHaveCorrectWins()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                User user = new User();
+                user.Auth0Id = "test";
+                IUserBL userBL = new UserBL(context);
+                ICategoryBL categoryBL = new CategoryBL(context);
+                IUserStatBL userStatBL = new UserStatBL(context);
+                Category category = new Category();
+                category.Name = 1;
+                await categoryBL.AddCategory(category);
+                await userBL.AddUser(user);
+                Double avgExpected;
+                TypeTest testToBeInserted = await userStatBL.SaveTypeTest(1, 50, 100, 100, DateTime.Now);
+                List<UserStat> userStats = await userStatBL.AddTestUpdateStat(1, 1, testToBeInserted);
+                int expected = 1;
+                Assert.Equal(expected,(await userStatBL.UpdateWL(userStats, true, 5))[0].Wins);
+            }
+        }
         private void Seed()
         {
             using(var context = new UserTestDBContext(options))

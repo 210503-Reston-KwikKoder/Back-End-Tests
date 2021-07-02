@@ -54,6 +54,14 @@ namespace UserTestsBL
         /// <param name="userId">Id for user to get tests for</param>
         /// <returns>List of tuples for each category with a list of tests in that category, null on error</returns>
         Task<List<Tuple<int, List<TypeTest>>>> GetTypeTestForUserByCategory(int userId);
+        /// <summary>
+        /// Uses tracking to update user wins and losses for a user before callint the database to save changes
+        /// </summary>
+        /// <param name="userStats">User stats to update</param>
+        /// <param name="won">true if user won false otherwise</param>
+        /// <param name="winstreak">user's current winstreak</param>
+        /// <returns>List of Userstats, null on error</returns>
+        Task<List<UserStat>> UpdateWL(List<UserStat> userStats, bool won, int winstreak);
 
     }
 }
