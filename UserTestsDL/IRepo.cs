@@ -75,11 +75,7 @@ namespace UserTestsDL
         /// <returns>List of stats if found, null otherwise</returns>
         Task<List<UserStatCatJoin>> GetUserStats(int userId);
         Task<Category> GetCategoryById(int id);
-        /// <summary>
-        /// Gets a userstat by the user stat id
-        /// </summary>
-        /// <param name="id">id of userstat to get</param>
-        /// <returns>userstat if found null otherwise</returns>
+        
         //Task<UserStat> GetUserStatById(int id);
         /// <summary>
         /// Gets the relevant type tests for a given user Id
@@ -87,6 +83,11 @@ namespace UserTestsDL
         /// <param name="id">User Id to get tests for</param>
         /// <returns>List of type tests user has taken</returns>
         Task<List<TypeTest>> GetTypeTestsForUser(int userId);
+        /// <summary>
+        /// Gets a userstat by the user stat id
+        /// </summary>
+        /// <param name="id">id of userstat to get</param>
+        /// <returns>userstat if found null otherwise</returns>
         Task<UserStat> GetUserStatById(int id);
         /// <summary>
         /// Updates the 
@@ -105,5 +106,24 @@ namespace UserTestsDL
         /// </summary>
         /// <returns>null</returns>
         Task SaveChanges();
+        /// <summary>
+        /// Adds a goal to the db 
+        /// </summary>
+        /// <param name="goal">goal to add to the db</param>
+        /// <returns>goal added or null if error is thrown</returns>
+        Task<Goal> AddGoal(Goal goal);
+        /// <summary>
+        /// Get a goal for a given user in a given category
+        /// </summary>
+        /// <param name="categoryId">id of category to find goal in</param>
+        /// <param name="userId">id of User to find goal for </param>
+        /// <returns>Goal or null if none found</returns>
+        Task<Goal> GetGoal(int categoryId, int userId);
+        /// <summary>
+        /// Gets a list of all claimable goals for a user with a given userId 
+        /// </summary>
+        /// <param name="userId">Id of user to find goals avaiable for user</param>
+        /// <returns>List of claimable goals</returns>
+        Task<List<Goal>> GetGoalsForUser(int userId);
     }
 }

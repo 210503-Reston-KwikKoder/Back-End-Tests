@@ -299,6 +299,56 @@ namespace GACDTests
                 Assert.Equal(expected,(await userStatBL.UpdateWL(userStats, true, 5))[0].Wins);
             }
         }
+        [Fact]
+        public async Task AddGoalShouldBeFound()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                User user = new User();
+                user.Auth0Id = "test";
+                IUserBL userBL = new UserBL(context);
+                ICategoryBL categoryBL = new CategoryBL(context);
+                IUserStatBL userStatBL = new UserStatBL(context);
+                IGoalBL goalBL = new GoalBL(context);
+                Category category = new Category();
+                category.Name = 1;
+                await categoryBL.AddCategory(category);
+                await userBL.AddUser(user);
+                Goal goal = new Goal();
+                goal.Checked = false;
+                goal.CategoryId = 1;
+                goal.UserId = 1;
+                goal.GoalDate = DateTime.Now.AddDays(-7);
+                await goalBL.AddGoal(goal);
+                Assert.NotNull(goalBL.GetGoal(1,1));
+            }
+        }
+        [Fact]
+        public async Task GetGoalsShouldNotBeEmpty()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                User user = new User();
+                user.Auth0Id = "test";
+                IUserBL userBL = new UserBL(context);
+                ICategoryBL categoryBL = new CategoryBL(context);
+                IUserStatBL userStatBL = new UserStatBL(context);
+                IGoalBL goalBL = new GoalBL(context);
+                Category category = new Category();
+                category.Name = 1;
+                await categoryBL.AddCategory(category);
+                await userBL.AddUser(user);
+                Goal goal = new Goal();
+                goal.Checked = false;
+                goal.CategoryId = 1;
+                goal.UserId = 1;
+                goal.GoalDate = DateTime.Now.AddDays(-7);
+                await goalBL.AddGoal(goal);
+                int expected = 1;
+                int actual =(await goalBL.GetAllGoals(1)).Count;
+                Assert.Equal(expected, actual);
+            }
+        }
         private void Seed()
         {
             using(var context = new UserTestDBContext(options))

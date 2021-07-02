@@ -340,5 +340,59 @@ namespace UserTestsDL
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Goal> AddGoal(Goal goal)
+        {
+            try
+            {
+                await _context.Goals.AddAsync(goal);
+                await _context.SaveChangesAsync();
+                return goal;
+            }
+            catch(Exception e)
+            {
+                Log.Error(e.StackTrace);
+                Log.Error("Could not add goal, returning null");
+                return null;
+            }
+        }
+
+        public async Task<Goal> GetGoal(int categoryId, int userId)
+        {
+            try
+            {
+                Goal goal = await (from g in _context.Goals
+                                   where g.CategoryId == categoryId
+                                   && g.UserId == userId
+                                   && !g.Checked
+                                   && g.GoalDate < DateTime.Now
+                                   select g).SingleAsync();
+                return goal;
+            }catch(Exception e)
+            {
+                Log.Information(e.StackTrace);
+                Log.Information("Goal not found");
+                return null;
+            }
+        }
+
+        public async Task<List<Goal>> GetGoalsForUser(int userId)
+        {
+            try
+            {
+                List<Goal> goals = await (from g in _context.Goals
+                                   where g.UserId == userId
+                                   && !g.Checked
+                                   && g.GoalDate < DateTime.Now
+                                   select g).ToListAsync();
+                return goals;
+            }
+            catch(Exception e)
+            {
+                Log.Error(e.StackTrace);
+                Log.Error("Could not find any goals for the user");
+                return new List<Goal>();
+            }
+        }
     }
 }

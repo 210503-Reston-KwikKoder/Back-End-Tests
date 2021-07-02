@@ -18,6 +18,7 @@ namespace UserTestsDL
        public DbSet<UserStat> UserStats { get; set; }
         public DbSet<UserStatCatJoin> UserStatCatJoins { get; set; }
         public DbSet<TypeTest> TypeTests { get; set; }
+        public DbSet<Goal> Goals { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
@@ -37,6 +38,8 @@ namespace UserTestsDL
             modelBuilder.Entity<TypeTest>()
                 .Property(tT => tT.Id)
                 .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Goal>()
+                .HasKey(goal => new { goal.CategoryId, goal.UserId });
            
         }
     }

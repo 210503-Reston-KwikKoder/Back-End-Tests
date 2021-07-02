@@ -14,7 +14,7 @@ namespace UserTestsREST.DTO
             this.numberoftests = numTests;
             this.totaltesttime = totTTime;
             this.category = categoryName;
-
+            this.userID = userid;
         }
         public string userID { get; set; }
         public double averagewpm { get; set; }
