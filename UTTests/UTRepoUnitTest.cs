@@ -340,7 +340,32 @@ namespace UTTests
                 Assert.Empty(test);
                 context.Database.EnsureCreated();
             }
-        }  
+        }
+
+
+        [Fact]
+
+        public async Task VerifyGetUserStatsReturnsNewListOnError(){
+            using (var context = new UserTestDBContext(options))
+            {
+                IRepo _repo = new Repo(context);
+                var list = await _repo.GetUserStats(2);
+
+                Assert.Empty(list);
+            }
+        }
+        
+        [Fact]
+        public async Task VerifyGetTypeTestsForUserReturnsNewList(){
+            using (var context = new UserTestDBContext(options))
+            {
+                IRepo _repo = new Repo(context);
+                var list = await _repo.GetTypeTestsForUser(2);
+
+                Assert.Empty(list);                
+            }
+
+        }
 
     }
 }
