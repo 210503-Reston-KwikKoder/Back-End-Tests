@@ -29,7 +29,7 @@ namespace UserTestsREST.Controllers
         private readonly IUserBL _userBL;
         private readonly ICategoryBL _categoryBL;
         private readonly ApiSettings _ApiSettings;
-        
+        private List<UserStat> userStats; 
         public TypeTestController(ISnippets snip, IUserStatBL _userstat, IUserBL userBL, ICategoryBL categoryBL, IOptions<ApiSettings> settings)
 
         {
@@ -74,15 +74,39 @@ namespace UserTestsREST.Controllers
         [Authorize]
         public async Task<ActionResult> CreateTypeTest(TypeTestInput typeTest)
         {
+            //get userID and then go to type test creation
             Log.Information(typeTest.categoryId.ToString());
             string UserID = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            if(await _userBL.GetUser(UserID) == null)
+            return await TrueAddTest(typeTest,UserID);
+        }
+        [HttpPost("comptest")]
+        public async Task<ActionResult> CompTypeTest(CompTestInput compTestInput)
+        {
+            TypeTestInput typeTestInput = compTestInput;
+            await TrueAddTest(typeTestInput, compTestInput.auth0Id);
+            try
+            {
+                //update wins and losses
+               await _userStatService.UpdateWL(userStats, compTestInput.won, compTestInput.winStreak);
+                return NoContent();
+            }
+            catch(Exception e)
+            {
+                Log.Error(e.StackTrace);
+                Log.Error("Bad request in comptest");
+                return BadRequest();
+            }
+        }
+        private async Task<ActionResult>TrueAddTest(TypeTestInput typeTest, string UserID)
+        {
+            //check if user and category exists before adding test   
+            if (await _userBL.GetUser(UserID) == null)
             {
                 UserTestsModels.User user = new UserTestsModels.User();
                 user.Auth0Id = UserID;
                 await _userBL.AddUser(user);
             }
-            if(await _categoryBL.GetCategory(typeTest.categoryId) == null)
+            if (await _categoryBL.GetCategory(typeTest.categoryId) == null)
             {
                 Category category = new Category();
                 category.Name = typeTest.categoryId;
@@ -90,12 +114,12 @@ namespace UserTestsREST.Controllers
             }
             Category category1 = await _categoryBL.GetCategory(typeTest.categoryId);
             UserTestsModels.User user1 = await _userBL.GetUser(UserID);
-            TypeTest testToBeInserted = await _userStatService.SaveTypeTest(typeTest.numberoferrors,typeTest.numberofcharacters,typeTest.timetakenms,typeTest.wpm,typeTest.date);
-            List<UserStat> userStats;
+            TypeTest testToBeInserted = await _userStatService.SaveTypeTest(typeTest.numberoferrors, typeTest.numberofcharacters, typeTest.timetakenms, typeTest.wpm, typeTest.date);
+            
             try
             {
-                userStats =
-                await _userStatService.AddTestUpdateStat(user1.Id, category1.Id, testToBeInserted);
+                //get user's info for leaderboard
+                userStats = await _userStatService.AddTestUpdateStat(user1.Id, category1.Id, testToBeInserted);
                 dynamic AppBearerToken = GetApplicationToken();
                 var client = new RestClient($"https://kwikkoder.us.auth0.com/api/v2/users/{UserID}");
                 var request = new RestRequest(Method.GET);
@@ -127,10 +151,12 @@ namespace UserTestsREST.Controllers
                 }
                 catch (Exception e) { Log.Information(e.Message); }
                 lbModelsToSend.Add(avglbModel);
-                var objAsJson = JsonConvert.SerializeObject(lbModelsToSend);
-                var content = new StringContent(objAsJson, Encoding.UTF8, "application/json");
-                var _httpClient = new HttpClient();
-                var result = await _httpClient.PutAsync("http://kwikkoder.com/lb/api/LB", content);
+                //Convert userstat and info into json for leaderboard backend to receive
+                string modelsJson = JsonConvert.SerializeObject(lbModelsToSend);
+                StringContent content = new StringContent(modelsJson, Encoding.UTF8, "application/json");
+                HttpClient httpClient = new HttpClient();
+                //call leaderboard put endpoint with new info
+                HttpResponseMessage result = await httpClient.PutAsync("http://20.69.69.228/lb/api/LB", content);
             }
 
             catch (Exception e)
@@ -139,8 +165,8 @@ namespace UserTestsREST.Controllers
                 Log.Error(e.StackTrace);
                 return BadRequest();
             }
-            
-            
+
+
             return Ok();
         }
         private dynamic GetApplicationToken()

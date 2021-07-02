@@ -152,5 +152,31 @@ namespace UserTestsBL
                
 
         }
+
+        public async Task<List<UserStat>> UpdateWL(List<UserStat> userStats, bool won, int winstreak)
+        {
+            try
+            {
+                foreach(UserStat userStat in userStats)
+                {
+                    if (won) ++userStat.Wins;
+                    else ++userStat.Losses;
+                    double winner = userStat.Wins;
+                    double loser = userStat.Losses;
+                    if (userStat.Losses != 0)
+                    {
+                        userStat.WLRatio = winner / (winner + loser);
+                    }
+                    if (winstreak > userStat.WinStreak) userStat.WinStreak = winstreak;
+                }
+                await _repo.SaveChanges();
+                return userStats;
+            }catch(Exception e)
+            {
+                Log.Error(e.StackTrace);
+                Log.Error("Unexpected error in UpdateWL");
+                return null;
+            }
+        }
     }
 }
