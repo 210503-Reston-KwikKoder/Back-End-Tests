@@ -151,6 +151,19 @@ namespace UTTests
         }
 
         [Fact]
+
+        public async Task VerifyGetAvgUserStatReturnsNewUserStat(){
+            using (var context = new UserTestDBContext(options))
+            {
+                IUserStatBL _bl = new UserStatBL(context);
+                var target = 2;
+                var test = await _bl.GetAvgUserStat(target);
+                var expected = 0;
+                Assert.Equal(expected, test.AverageWPM);
+            }
+        }
+
+        [Fact]
         public async Task VerifyGetUserStatsByIdShouldReturnNull()
         {
             using (var context = new UserTestDBContext(options))
@@ -241,6 +254,11 @@ namespace UTTests
                     {
                         Id = 1,
                         Auth0Id = "abc"
+                    },
+                    new User
+                    {
+                        Id = 2,
+                        Auth0Id = "def"
                     }
                 );
                 context.UserStats.AddRange(
