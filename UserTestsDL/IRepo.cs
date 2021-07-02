@@ -100,5 +100,10 @@ namespace UserTestsDL
         /// <param name="userId">Id for user to get tests for</param>
         /// <returns>List of tuples for each category with a list of tests in that category, null on error</returns>
         Task<List<Tuple<int, List<TypeTest>>>> GetTypeTestForUserByCategory(int userId);
+        /// <summary>
+        /// Extremely lightweight method to quickly update any tracked rows in the database
+        /// </summary>
+        /// <returns>null</returns>
+        Task SaveChanges();
     }
 }
