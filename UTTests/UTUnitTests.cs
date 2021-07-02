@@ -207,6 +207,21 @@ namespace GACDTests
                 Assert.Null(await userBL.GetUser(1));
             }
         }
+
+        [Fact]
+        public async Task GetUserByuserID()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                User user = new User();
+                user.Auth0Id = "testid";
+                IUserBL userBL = new UserBL(context);
+                userBL.AddUser(user);
+                
+
+                Assert.NotNull(await userBL.GetUser("testid"));
+            }
+        }
       
         /// <summary>
         /// Makes sure that we are able to get category by id

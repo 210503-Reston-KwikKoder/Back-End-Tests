@@ -23,20 +23,20 @@ namespace UserTestsREST
             CreateHost(args);
 
             //Setup Serilog
-            Log.Logger = new LoggerConfiguration()
-            .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .CreateLogger();
+            // Log.Logger = new LoggerConfiguration()
+            // .Enrich.FromLogContext()
+            // .WriteTo.Console()
+            // .CreateLogger();
 
-            try
-            {
-                CreateHostBuilder(args).Build().Run();
-                Log.Information("Started web host");
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "Host terminated unexpectedly");
-            }
+            // try
+            // {
+            //     CreateHostBuilder(args).Build().Run();
+            //     Log.Information("Started web host");
+            // }
+            // catch (Exception ex)
+            // {
+            //     Log.Fatal(ex, "Host terminated unexpectedly");
+            // }
         }
 
         private static void ConfigureLogging()
@@ -44,7 +44,7 @@ namespace UserTestsREST
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile(
-                    $"appsettings.Development.json",
+                    $"appsettings.{environment}.json",
                     optional: false)
                 .Build();
 
@@ -79,9 +79,10 @@ namespace UserTestsREST
             })
             .ConfigureAppConfiguration(configuration =>
             {
+                var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
                 configuration.AddJsonFile("secrets/appsettings.json", optional: true, reloadOnChange: true);
                 configuration.AddJsonFile(
-                    $"appsettings.Development.json",
+                    $"appsettings.{environment}.json",
                     optional: false);
             })
             .UseSerilog();

@@ -12,7 +12,6 @@ namespace UserTestsDL
     public class UserTestDBContext:DbContext
     {
         public UserTestDBContext(DbContextOptions options): base(options) { }
-        protected UserTestDBContext() { }
         public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
        public DbSet<UserStat> UserStats { get; set; }
