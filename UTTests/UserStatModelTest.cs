@@ -211,5 +211,25 @@ namespace UTTests
             Assert.True(test.TypeTests.Count == 1);
         }
 
+        [Fact]
+        public void TestUserStatTypeTest(){
+            TypeTest test = new TypeTest();
+            test.UserStat = new UserStat();
+            test.UserStat.NumberOfTests=1;
+            Assert.Equal(1, test.UserStat.NumberOfTests);
+        }
+
+        [Fact] 
+        public void UserStatCatJoinTest(){
+            var join = new UserStatCatJoin();
+            join.User = new User(){ Auth0Id = "varchar", Revapoints = 10};
+            join.UserStat = new UserStat(){NumberOfTests = 1};
+
+            Assert.Equal(1, join.UserStat.NumberOfTests);
+            Assert.Equal(10, join.User.Revapoints);
+            Assert.Equal("varchar", join.User.Auth0Id);
+
+        }
+
     }
 }
