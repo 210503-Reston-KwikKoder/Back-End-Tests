@@ -87,7 +87,7 @@ namespace UserTestsREST.Controllers
             try
             {
                 //update wins and losses
-               await _userStatService.UpdateWL(userStats, compTestInput.won, compTestInput.winStreak);
+                await _userStatService.UpdateWL(userStats, compTestInput.won, compTestInput.winStreak);
                 return NoContent();
             }
             catch(Exception e)
