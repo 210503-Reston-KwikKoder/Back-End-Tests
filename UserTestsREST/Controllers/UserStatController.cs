@@ -156,28 +156,6 @@ namespace UserTestsREST.Controllers
             }
         }
         
-        [HttpPost("comptest")]
-        [Authorize]
-        public async Task<ActionResult> TestingResults(TypeTestInput testing, bool won, string auth, int win_streak)
-        {
-            User newUser = await this._userBL.GetUser(auth);
-            UserStat userStat = await this._userStatBL.GetUserStatByUSId(newUser.Id);
-            TypeTest typer = new TypeTest();
-            typer.UserStatId= newUser.Id;
-            typer.NumberOfErrors= testing.numberoferrors;
-            typer.NumberOfWords= testing.numberofcharacters;
-            typer.TimeTaken= testing.timetakenms;
-            typer.Date= testing.date;
-            typer.WPM = testing.wpm;
-            if(won)
-            {
-                
-            }
-            else
-            {
-                await this._userStatBL.AddTestUpdateStat(newUser.Id, testing.categoryId, typer);
-            }
-            return Ok();
-        }
+        
     }
 }
