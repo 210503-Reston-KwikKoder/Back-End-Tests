@@ -50,8 +50,23 @@ namespace UserTestsREST.Controllers
                 {
                     UserStat userStat = await _userStatBL.GetUserStatByUSId(userStatCatJoin.UserStatId);
                     Category category = await _categoryBL.GetCategoryById(userStatCatJoin.CategoryId);
-                    statModels.Add(new StatModel(u.Auth0Id, userStat.AverageWPM, userStat.AverageAccuracy, userStat.NumberOfTests, userStat.TotalTestTime, category.Name));
+                    StatModel statModel = new StatModel(u.Auth0Id, userStat.AverageWPM, userStat.AverageAccuracy, userStat.NumberOfTests, userStat.TotalTestTime, category.Name);
+                    try
+                    {
+                        statModel.Wins = userStat.Wins;
+                        statModel.Losses = userStat.Losses;
+                        statModel.WinStreak = userStat.WinStreak;
+                        statModel.WLRatio = userStat.WLRatio;
+                    }
+                    catch(Exception e)
+                    {
+                        Log.Information(e.StackTrace);
+                        Log.Information("Stat Not found");
+                    }
+                    statModels.Add(statModel);
+                    
                 }
+                
                 return statModels;
             }
             catch (Exception)
@@ -147,7 +162,20 @@ namespace UserTestsREST.Controllers
                 u.Auth0Id = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 u = await _userBL.GetUser(u.Auth0Id);
                 UserStat userStat = await _userStatBL.GetAvgUserStat(u.Id);
-                return new StatModel(u.Id.ToString(), userStat.AverageWPM, userStat.AverageAccuracy, userStat.NumberOfTests, userStat.TotalTestTime, u.Revapoints);
+                StatModel statModel = new StatModel(u.Id.ToString(), userStat.AverageWPM, userStat.AverageAccuracy, userStat.NumberOfTests, userStat.TotalTestTime, u.Revapoints);
+                try
+                {
+                    statModel.Wins = userStat.Wins;
+                    statModel.Losses = userStat.Losses;
+                    statModel.WinStreak = userStat.WinStreak;
+                    statModel.WLRatio = userStat.WLRatio;
+                }
+                catch (Exception e)
+                {
+                    Log.Information(e.StackTrace);
+                    Log.Information("Stat Not found");
+                }
+                return statModel;
             }
             catch (Exception)
             {
