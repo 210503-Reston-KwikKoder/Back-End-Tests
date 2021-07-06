@@ -22,5 +22,9 @@ namespace UserTestsREST.DTO
         public int numberoftests { get; set; }
         public int totaltesttime { get; set; }
         public int category { get; set; }
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+        public double WLRatio { get; set; }
+        public int WinStreak { get; set; }
     }
 }
