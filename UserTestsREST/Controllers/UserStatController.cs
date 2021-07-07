@@ -41,33 +41,8 @@ namespace UserTestsREST.Controllers
         {
             try
             {
-                User u = new User();
-                u.Auth0Id = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                u = await _userBL.GetUser(u.Auth0Id);
-                List<UserStatCatJoin> uscjs =  await _userStatBL.GetUserStats(u.Id);
-                List<StatModel> statModels = new List<StatModel>();
-                foreach(UserStatCatJoin userStatCatJoin in uscjs)
-                {
-                    UserStat userStat = await _userStatBL.GetUserStatByUSId(userStatCatJoin.UserStatId);
-                    Category category = await _categoryBL.GetCategoryById(userStatCatJoin.CategoryId);
-                    StatModel statModel = new StatModel(u.Auth0Id, userStat.AverageWPM, userStat.AverageAccuracy, userStat.NumberOfTests, userStat.TotalTestTime, category.Name);
-                    try
-                    {
-                        statModel.Wins = userStat.Wins;
-                        statModel.Losses = userStat.Losses;
-                        statModel.WinStreak = userStat.WinStreak;
-                        statModel.WLRatio = userStat.WLRatio;
-                    }
-                    catch(Exception e)
-                    {
-                        Log.Information(e.StackTrace);
-                        Log.Information("Stat Not found");
-                    }
-                    statModels.Add(statModel);
-                    
-                }
-                
-                return statModels;
+                List<StatModel> stats = await GetStatsHelper(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                return stats;
             }
             catch (Exception)
             {
@@ -75,7 +50,36 @@ namespace UserTestsREST.Controllers
                 return NotFound();
             }
         }
+        private async Task<List<StatModel>> GetStatsHelper(string authId)
+        {
+            User u = new User();
+            u.Auth0Id = authId;
+            u = await _userBL.GetUser(u.Auth0Id);
+            List<UserStatCatJoin> uscjs = await _userStatBL.GetUserStats(u.Id);
+            List<StatModel> statModels = new List<StatModel>();
+            foreach (UserStatCatJoin userStatCatJoin in uscjs)
+            {
+                UserStat userStat = await _userStatBL.GetUserStatByUSId(userStatCatJoin.UserStatId);
+                Category category = await _categoryBL.GetCategoryById(userStatCatJoin.CategoryId);
+                StatModel statModel = new StatModel(u.Auth0Id, userStat.AverageWPM, userStat.AverageAccuracy, userStat.NumberOfTests, userStat.TotalTestTime, category.Name);
+                try
+                {
+                    statModel.Wins = userStat.Wins;
+                    statModel.Losses = userStat.Losses;
+                    statModel.WinStreak = userStat.WinStreak;
+                    statModel.WLRatio = userStat.WLRatio;
+                }
+                catch (Exception e)
+                {
+                    Log.Information(e.StackTrace);
+                    Log.Information("Stat Not found");
+                }
+                statModels.Add(statModel);
 
+            }
+
+            return statModels;
+        }
         /// <summary>
         /// GET /api/UserStat/tests
         /// Used to get current user’s latest 100 tests as a list of tests sorted by date (oldest to newest).
@@ -158,24 +162,15 @@ namespace UserTestsREST.Controllers
         {
             try
             {
-                User u = new User();
-                u.Auth0Id = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                u = await _userBL.GetUser(u.Auth0Id);
-                UserStat userStat = await _userStatBL.GetAvgUserStat(u.Id);
-                StatModel statModel = new StatModel(u.Id.ToString(), userStat.AverageWPM, userStat.AverageAccuracy, userStat.NumberOfTests, userStat.TotalTestTime, u.Revapoints);
-                try
+                List<StatModel> statModels = await GetStatsHelper(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                return await Task.Run(() =>
                 {
-                    statModel.Wins = userStat.Wins;
-                    statModel.Losses = userStat.Losses;
-                    statModel.WinStreak = userStat.WinStreak;
-                    statModel.WLRatio = userStat.WLRatio;
+                    StatModel stat = (from statModel in statModels
+                                      where statModel.category == -2
+                                      select statModel).Single();
+                    return stat;
                 }
-                catch (Exception e)
-                {
-                    Log.Information(e.StackTrace);
-                    Log.Information("Stat Not found");
-                }
-                return statModel;
+                );
             }
             catch (Exception)
             {
