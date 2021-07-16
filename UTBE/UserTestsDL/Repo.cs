@@ -210,7 +210,7 @@ namespace UserTestsDL
             {
                 await _context.UserStats.AddAsync(userStat);
                 await _context.SaveChangesAsync();
-                //this might miss timing just call me if you have an issue
+          
                 UserStatCatJoin uscj = new UserStatCatJoin();
                 uscj.CategoryId = categoryid;
                 uscj.UserId = userIdsave;
