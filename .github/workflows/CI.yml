@@ -30,7 +30,7 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore UTBE
       - name: Build
         run: dotnet build UTBE --configuration Release --no-restore
       - name: Test
