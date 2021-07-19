@@ -32,9 +32,9 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build UTBE --configuration Release --no-restore
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test UTBE --no-restore --verbosity normal
       - name: SonarScanner for .NET 5
         uses: highbyte/sonarscan-dotnet@2.0
         with:
