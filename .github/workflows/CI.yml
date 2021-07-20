@@ -30,11 +30,11 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore UTBE
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build UTBE --configuration Release --no-restore
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test UTBE --no-restore --verbosity normal
       - name: SonarScanner for .NET 5
         uses: highbyte/sonarscan-dotnet@2.0
         with:
@@ -44,7 +44,8 @@ jobs:
           sonarProjectName: Back-End-Tests
           # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
           sonarOrganization: 210503-reston-kwikkoder
-          dotnetTestArguments: --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+          dotnetBuildArguments: UTBE
+          dotnetTestArguments: UTBE --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
           # Optional extra command arguments the the SonarScanner 'begin' command
           sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" 
           # d:sonar.exclusions="**/Migrations/**"
