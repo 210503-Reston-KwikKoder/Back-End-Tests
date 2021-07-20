@@ -14,12 +14,7 @@ namespace UserTestsDL
         /// <param name="email">email of user</param>
         /// /// <returns>User with the given username and email</returns>
         Task<User> GetUser(string auth0id);
-        /// <summary>
-        /// Return a user based on id
-        /// </summary>
-        /// <param name="id">Id of requested yser</param>
-        /// <returns>User Associated Id</returns>
-        Task<User> GetUser(int id);
+  
         /// <summary>
         /// Gets all users in the database
         /// </summary>
@@ -42,26 +37,21 @@ namespace UserTestsDL
         /// </summary>
         /// <returns>List of categories found</returns>
         Task<List<Category>> GetAllCategories();
-        /// <summary>
-        /// Gets a category by it's Octokit.Language int name
-        /// </summary>
-        /// <param name="name">name of category requested</param>
-        /// <returns>Category requested</returns>
-        Task<Category> GetCategoryByName(int name);
+        
         /// <summary>
         /// Versatile method to update a user's stats for a given category
         /// </summary>
         /// <param name="categoryid">category user participated in</param>
         /// <param name="userid">user id related to user</param>
         /// <returns>userstat updated</returns>
-        Task<UserStat> AddUpdateStats(int categoryid, int userid, UserStat userStat);
+        Task<UserStat> AddUpdateStats(int categoryid, string userid, UserStat userStat);
         /// <summary>
         /// Method that returns a user statistics for a given category, null if not found
         /// </summary>
         /// <param name="categoryId">category id for stat</param>
         /// <param name="userId">user id for stat</param>
         /// <returns>Userstat if found null otherwise</returns>
-        Task<UserStat> GetSatUserCat(int categoryId, int userId);
+        Task<UserStat> GetSatUserCat(int categoryId, string userId);
         /// <summary>
         /// Method that adds a test to the database
         /// </summary>
@@ -73,7 +63,7 @@ namespace UserTestsDL
         /// </summary>
         /// <param name="userId">Id for user whose stats are being requested</param>
         /// <returns>List of stats if found, null otherwise</returns>
-        Task<List<UserStatCatJoin>> GetUserStats(int userId);
+        Task<List<UserStatCatJoin>> GetUserStats(string userId);
         Task<Category> GetCategoryById(int id);
         
         //Task<UserStat> GetUserStatById(int id);
@@ -82,7 +72,7 @@ namespace UserTestsDL
         /// </summary>
         /// <param name="id">User Id to get tests for</param>
         /// <returns>List of type tests user has taken</returns>
-        Task<List<TypeTest>> GetTypeTestsForUser(int userId);
+        Task<List<TypeTest>> GetTypeTestsForUser(string userId);
         /// <summary>
         /// Gets a userstat by the user stat id
         /// </summary>
@@ -100,7 +90,7 @@ namespace UserTestsDL
         /// </summary>
         /// <param name="userId">Id for user to get tests for</param>
         /// <returns>List of tuples for each category with a list of tests in that category, null on error</returns>
-        Task<List<Tuple<int, List<TypeTest>>>> GetTypeTestForUserByCategory(int userId);
+        Task<List<Tuple<int, List<TypeTest>>>> GetTypeTestForUserByCategory(string userId);
         /// <summary>
         /// Extremely lightweight method to quickly update any tracked rows in the database
         /// </summary>
@@ -118,12 +108,12 @@ namespace UserTestsDL
         /// <param name="categoryId">id of category to find goal in</param>
         /// <param name="userId">id of User to find goal for </param>
         /// <returns>Goal or null if none found</returns>
-        Task<Goal> GetGoal(int categoryId, int userId);
+        Task<Goal> GetGoal(int categoryId, string userId);
         /// <summary>
         /// Gets a list of all claimable goals for a user with a given userId 
         /// </summary>
         /// <param name="userId">Id of user to find goals avaiable for user</param>
         /// <returns>List of claimable goals</returns>
-        Task<List<Goal>> GetGoalsForUser(int userId);
+        Task<List<Goal>> GetGoalsForUser(string userId);
     }
 }

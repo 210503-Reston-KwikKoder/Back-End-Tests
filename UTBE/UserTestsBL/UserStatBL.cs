@@ -17,7 +17,7 @@ namespace UserTestsBL
             _repo = new Repo(context);
         }
 
-        public async Task<List<UserStat>> AddTestUpdateStat(int userId, int categoryId, TypeTest typeTest)
+        public async Task<List<UserStat>> AddTestUpdateStat(string userId, int categoryId, TypeTest typeTest)
         {
            UserStat userStat;
             try
@@ -46,9 +46,9 @@ namespace UserTestsBL
                 userStat.AverageWPM = ((userStat.AverageWPM * userStat.NumberOfTests) + typeTest.WPM) / (userStat.NumberOfTests + 1);
                 userStat.NumberOfTests += 1;
                 userStat = await _repo.AddUpdateStats(categoryId, userId, userStat);
-                await _repo.AddCategory(new Category() { Name = -2 });
+                await _repo.AddCategory(new Category() { Id = -2 });
                 UserStat usAvg = new UserStat();
-                Category avgCat = await _repo.GetCategoryByName(-2);
+                Category avgCat = await _repo.GetCategoryById(-2);
                 if (await _repo.GetSatUserCat(avgCat.Id, userId) != null) usAvg = await _repo.GetSatUserCat(avgCat.Id, userId);
                 else
                 {
@@ -88,7 +88,7 @@ namespace UserTestsBL
             }
         }
 
-        public async Task<UserStat> GetAvgUserStat(int userId)
+        public async Task<UserStat> GetAvgUserStat(string userId)
         {
             List <UserStatCatJoin> uscjs = await _repo.GetUserStats(userId);
             List<UserStat> userStats = new List<UserStat>();
@@ -117,12 +117,12 @@ namespace UserTestsBL
             
         }
 
-        public async Task<List<Tuple<int, List<TypeTest>>>> GetTypeTestForUserByCategory(int userId)
+        public async Task<List<Tuple<int, List<TypeTest>>>> GetTypeTestForUserByCategory(string userId)
         {
             return await _repo.GetTypeTestForUserByCategory(userId);
         }
 
-        public async Task<List<TypeTest>> GetTypeTestsForUser(int userId)
+        public async Task<List<TypeTest>> GetTypeTestsForUser(string userId)
         {
             return await _repo.GetTypeTestsForUser(userId);
         }
@@ -132,7 +132,7 @@ namespace UserTestsBL
             return await _repo.GetUserStatById(userstatid);
         }
 
-        public async Task<List<UserStatCatJoin>> GetUserStats(int userId)
+        public async Task<List<UserStatCatJoin>> GetUserStats(string userId)
         {
             return await _repo.GetUserStats(userId);
         }

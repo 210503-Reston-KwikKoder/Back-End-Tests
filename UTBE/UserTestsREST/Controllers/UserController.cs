@@ -59,7 +59,6 @@ namespace UserTestsREST.Controllers
                     userNameModel.UserName = deResponse.username;
                     userNameModel.Name = deResponse.name;
                     userNameModel.Revapoints = u.Revapoints;
-                    userNameModel.UserId = u.Id;
                 }
                 catch (Exception e) { Log.Information(e.Message); }
                 return userNameModel;

@@ -9,7 +9,7 @@ namespace UserTestsModels
     public class UserStatCatJoin
     { 
         public UserStatCatJoin() { }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
         public int UserStatId { get; set; }
         public UserStat UserStat { get; set; }

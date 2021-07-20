@@ -22,12 +22,7 @@ namespace UserTestsBL
         /// <returns>Category added, null if not found</returns>
 
         Task<List<Category>> GetAllCategories();
-        /// <summary>
-        /// Get a category by it's number name (defined in Octokit.Language)
-        /// </summary>
-        /// <param name="name">name of language </param>
-        /// <returns>category requested</returns>
-        Task<Category> GetCategory(int name);
+      
         /// <summary>
         /// Getting category by it's id, not name
         /// </summary>

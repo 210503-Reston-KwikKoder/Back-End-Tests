@@ -106,20 +106,20 @@ namespace UserTestsREST.Controllers
                 user.Auth0Id = UserID;
                 await _userBL.AddUser(user);
             }
-            if (await _categoryBL.GetCategory(typeTest.categoryId) == null)
+            if (await _categoryBL.GetCategoryById(typeTest.categoryId) == null)
             {
                 Category category = new Category();
-                category.Name = typeTest.categoryId;
+                category.Id = typeTest.categoryId;
                 await _categoryBL.AddCategory(category);
             }
-            Category category1 = await _categoryBL.GetCategory(typeTest.categoryId);
+            Category category1 = await _categoryBL.GetCategoryById(typeTest.categoryId);
             UserTestsModels.User user1 = await _userBL.GetUser(UserID);
             TypeTest testToBeInserted = await _userStatService.SaveTypeTest(typeTest.numberoferrors, typeTest.numberofcharacters, typeTest.timetakenms, typeTest.wpm, typeTest.date);
             
             try
             {
                 //get user's info for leaderboard
-                userStats = await _userStatService.AddTestUpdateStat(user1.Id, category1.Id, testToBeInserted);
+                userStats = await _userStatService.AddTestUpdateStat(user1.Auth0Id, category1.Id, testToBeInserted);
                 dynamic AppBearerToken = GetApplicationToken();
                 var client = new RestClient($"https://kwikkoder.us.auth0.com/api/v2/users/{UserID}");
                 var request = new RestRequest(Method.GET);

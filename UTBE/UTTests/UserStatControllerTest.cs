@@ -132,7 +132,7 @@ namespace UTTests
         }
 
         [Fact]
-        public async void GetTestsErrorShouldReturnNotFound()
+        public async void GetTestsErrorShouldReturnNull()
         {
             using (var context = new UserTestDBContext(options))
             {
@@ -159,7 +159,7 @@ namespace UTTests
 
                 var action = await controller.GetTests();
 
-                Assert.IsType<NotFoundResult>(action.Result);
+                Assert.Null(action.Result);
             }
         }
 
@@ -311,20 +311,20 @@ namespace UTTests
                     new User
                     {
                         Auth0Id = "BZ",
-                        Id = 1,
+                        
                         Revapoints = 12
                     },
                     new User
                     {
                         Auth0Id = "test",
-                        Id = 2,
+                        
                         Revapoints = 22
                     },
 
                     new User
                     {
                         Auth0Id = "test1",
-                        Id = 3,
+                        
                         Revapoints = 22
                     }
 
@@ -333,13 +333,13 @@ namespace UTTests
                 context.UserStatCatJoins.AddRange(
                     new UserStatCatJoin
                     {
-                        UserId = 1,
+                        UserId = "BZ",
                         UserStatId = 12,
                         CategoryId = 1
                     },
                     new UserStatCatJoin
                     {
-                        UserId = 1,
+                        UserId = "BZ",
                         UserStatId = 13,
                         CategoryId = -2
                     }
@@ -396,12 +396,12 @@ namespace UTTests
                     new Category
                     {
                         Id = 1,
-                        Name = 1
+                        
                     },
                     new Category
                     {
                         Id = -2,
-                        Name = -2
+                       
                     }
                     );
 

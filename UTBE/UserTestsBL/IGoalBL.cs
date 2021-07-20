@@ -15,7 +15,7 @@ namespace UserTestsBL
         /// <param name="categoryId">category for goal</param>
         /// <param name="userId">user for goal</param>
         /// <returns>Goal if found or null otherwise</returns>
-        Task<Goal> GetGoal(int categoryId, int userId);
+        Task<Goal> GetGoal(int categoryId, string userId);
         /// <summary>
         /// Sends a given goal to the data layer to be added
         /// </summary>
@@ -27,6 +27,6 @@ namespace UserTestsBL
         /// </summary>
         /// <param name="userId">user to get goals for</param>
         /// <returns>List of goals, empty if not found</returns>
-        Task<List<Goal>> GetAllGoals(int userId);
+        Task<List<Goal>> GetAllGoals(string userId);
     }
 }
