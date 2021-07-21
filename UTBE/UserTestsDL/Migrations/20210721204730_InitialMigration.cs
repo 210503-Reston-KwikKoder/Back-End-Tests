@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace UserTestsDL.Migrations
+namespace UserTestsDataLayer.Migrations
 {
     public partial class InitialMigration : Migration
     {
@@ -12,7 +12,6 @@ namespace UserTestsDL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {

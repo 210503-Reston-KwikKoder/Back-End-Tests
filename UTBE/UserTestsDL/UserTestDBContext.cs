@@ -26,7 +26,7 @@ namespace UserTestsDL
                 .Property(userStat => userStat.Id)
                 .ValueGeneratedOnAdd();          
             modelBuilder.Entity<UserStatCatJoin>()
-                .HasKey(uscj => new { uscj.UserStatId, uscj.UserId, uscj.CategoryId });          
+                .HasKey(uscj => new { uscj.UserStatId, uscj.UserId, uscj.CategoryId });
             modelBuilder.Entity<TypeTest>()
                 .Property(tT => tT.Id)
                 .ValueGeneratedOnAdd();

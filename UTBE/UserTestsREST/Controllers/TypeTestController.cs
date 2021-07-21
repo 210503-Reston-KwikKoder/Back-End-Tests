@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Octokit;
 using UserTestsModels;
+using UserTestsModels.Utility;
 using UserTestsREST.DTO;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -59,7 +60,7 @@ namespace UserTestsREST.Controllers
         [HttpGet("{id}")]
         public async Task<TestMaterial> CodeSnippet(int id)
         {
-            if (id == -1) return await _snippetsService.GetRandomQuote();
+            if (id == CategoryDefinitions.Quotes) return await _snippetsService.GetRandomQuote();
             else return await _snippetsService.GetCodeSnippet(id);
         }
 
@@ -79,6 +80,12 @@ namespace UserTestsREST.Controllers
             string UserID = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return await TrueAddTest(typeTest,UserID);
         }
+        /// <summary>
+        /// POST /api/TypeTest/comptest
+        /// Takes in a DTO with wins/losses and a type test with a user Id for that information
+        /// </summary>
+        /// <param name="compTestInput">DTO with typetest and wins / losees for a user</param>
+        /// <returns>204 on success, 404 on error</returns>
         [HttpPost("comptest")]
         public async Task<ActionResult> CompTypeTest(CompTestInput compTestInput)
         {
@@ -97,6 +104,12 @@ namespace UserTestsREST.Controllers
                 return BadRequest();
             }
         }
+        /// <summary>
+        /// Shared method to add a test to the database for a given user and update the relevent tables and also the leaderboard back end
+        /// </summary>
+        /// <param name="typeTest">typeTest completed</param>
+        /// <param name="UserID">string id of the user</param>
+        /// <returns>200 on success, 404 on error</returns>
         private async Task<ActionResult>TrueAddTest(TypeTestInput typeTest, string UserID)
         {
             //check if user and category exists before adding test   
@@ -144,7 +157,7 @@ namespace UserTestsREST.Controllers
                 {
                     avglbModel.UserName = deResponse.username;
                     avglbModel.Name = deResponse.name;
-                    avglbModel.CatID = -2;
+                    avglbModel.CatID = CategoryDefinitions.Average;
                     avglbModel.AuthId = UserID;
                     avglbModel.AverageWPM = userStats[1].AverageWPM;
                     avglbModel.AverageAcc = userStats[1].AverageAccuracy;
@@ -170,6 +183,11 @@ namespace UserTestsREST.Controllers
 
             return Ok();
         }
+
+        /// <summary>
+        /// Private method to get application token for auth0 management 
+        /// </summary>
+        /// <returns>dynamic object with token for Auth0 call</returns>
         private dynamic GetApplicationToken()
         {
             var client = new RestClient("https://kwikkoder.us.auth0.com/oauth/token");

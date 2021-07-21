@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserTestsREST", "UserTestsREST\UserTestsREST.csproj", "{21D2FEE5-F541-4F23-8284-85DA4AADC9B0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserTestsDL", "UserTestsDL\UserTestsDL.csproj", "{812A967D-5459-4558-92F4-2C6F13456192}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserTestsDataLayer", "UserTestsDL\UserTestsDataLayer.csproj", "{812A967D-5459-4558-92F4-2C6F13456192}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserTestsBL", "UserTestsBL\UserTestsBL.csproj", "{A43460AF-081E-45A1-9453-44AA7346A1C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserTestsBusinessLayer", "UserTestsBL\UserTestsBusinessLayer.csproj", "{A43460AF-081E-45A1-9453-44AA7346A1C5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserTestsModels", "UserTestsModels\UserTestsModels.csproj", "{3D5364B8-E330-429C-8DFA-AC6217BA1440}"
 EndProject

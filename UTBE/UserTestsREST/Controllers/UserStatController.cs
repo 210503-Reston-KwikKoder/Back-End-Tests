@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Serilog;
 using UserTestsREST.DTO;
+using UserTestsModels.Utility;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -113,6 +114,11 @@ namespace UserTestsREST.Controllers
                 return NotFound();
             }
         }
+        /// <summary>
+        /// GET /api/UserStat/tests
+        /// Used to get all of a user's tests as a list of lists, a seperate list for every category. 
+        /// </summary>
+        /// <returns>Relevant list of list of DTO's or 404 on error</returns>
         [HttpGet("tests/all")]
         [Authorize]
         public async Task<ActionResult<IEnumerable<IEnumerable<TestStatCatOutput>>>> GetAllTests()
@@ -165,7 +171,7 @@ namespace UserTestsREST.Controllers
                 return await Task.Run(() =>
                 {
                     StatModel stat = (from statModel in statModels
-                                      where statModel.category == -2
+                                      where statModel.category == CategoryDefinitions.Average
                                       select statModel).Single();
                     return stat;
                 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UserTestsDL;
 
-namespace UserTestsDL.Migrations
+namespace UserTestsDataLayer.Migrations
 {
     [DbContext(typeof(UserTestDBContext))]
     partial class UserTestDBContextModelSnapshot : ModelSnapshot
@@ -22,9 +22,7 @@ namespace UserTestsDL.Migrations
             modelBuilder.Entity("UserTestsModels.Category", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
