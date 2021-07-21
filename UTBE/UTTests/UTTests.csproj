@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UserTestsBL\UserTestsBusinessLayer.csproj" />
-    <ProjectReference Include="..\UserTestsDL\UserTestsDataLayer.csproj" />
+    <ProjectReference Include="..\UserTestsBusinessLayer\UserTestsBusinessLayer.csproj" />
+    <ProjectReference Include="..\UserTestsDataLayer\UserTestsDataLayer.csproj" />
     <ProjectReference Include="..\UserTestsModels\UserTestsModels.csproj" />
     <ProjectReference Include="..\UserTestsREST\UserTestsREST.csproj" />
   </ItemGroup>
