@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserTestsModels.Utility;
+
 namespace UserTestsDL
 {
     public class Repo : IRepo
@@ -173,15 +175,22 @@ namespace UserTestsDL
             }
             catch (Exception)
             {
-                await _context.UserStats.AddAsync(userStat);
-                await _context.SaveChangesAsync();
-          
-                UserStatCatJoin uscj = new UserStatCatJoin();
-                uscj.CategoryId = categoryid;
-                uscj.UserId = userIdsave;
-                uscj.UserStatId = userStat.Id;
-                await _context.UserStatCatJoins.AddAsync(uscj);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    await _context.UserStats.AddAsync(userStat);
+                    await _context.SaveChangesAsync();
+                    UserStatCatJoin uscj = new UserStatCatJoin();
+                    uscj.CategoryId = categoryid;
+                    uscj.UserId = userIdsave;
+                    uscj.UserStatId = userStat.Id;
+                    await _context.UserStatCatJoins.AddAsync(uscj);
+                    await _context.SaveChangesAsync();
+                }
+                catch(Exception e)
+                {
+                    Log.Error(e.Message);
+                    Log.Error(e.StackTrace);
+                }
             }
             return userStat;
         }
@@ -272,7 +281,7 @@ namespace UserTestsDL
                 {
                     try
                     {
-                        if(userStatCatJoin.CategoryId != -2)
+                        if(userStatCatJoin.CategoryId != CategoryDefinitions.Average)
                         {
                             List<TypeTest> typeTestsForStat = (from test in _context.TypeTests
                                                                where test.UserStatId == userStatCatJoin.UserStatId

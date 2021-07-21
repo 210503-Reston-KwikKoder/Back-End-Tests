@@ -29,8 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UserTestsBL\UserTestsBL.csproj" />
-    <ProjectReference Include="..\UserTestsDL\UserTestsDL.csproj" />
+    <ProjectReference Include="..\UserTestsBL\UserTestsBusinessLayer.csproj" />
+    <ProjectReference Include="..\UserTestsDL\UserTestsDataLayer.csproj" />
     <ProjectReference Include="..\UserTestsModels\UserTestsModels.csproj" />
   </ItemGroup>
 
@@ -38,5 +38,9 @@
     <None Remove="Serilog.Enrichers.Environment" />
     <None Remove="Serilog.Sinks.Debug" />
     <None Remove="Serilog.Sinks.Graylog" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Utility\" />
   </ItemGroup>
 </Project>

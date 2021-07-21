@@ -15,6 +15,7 @@ using Moq;
 using UserTestsREST;
 using System.Security.Claims;
 using UserTestsREST.Controllers;
+using UserTestsModels.Utility;
 
 namespace UTTests
 {
@@ -341,7 +342,7 @@ namespace UTTests
                     {
                         UserId = "BZ",
                         UserStatId = 13,
-                        CategoryId = -2
+                        CategoryId = CategoryDefinitions.Average
                     }
                     );
 
@@ -400,7 +401,7 @@ namespace UTTests
                     },
                     new Category
                     {
-                        Id = -2,
+                        Id = CategoryDefinitions.Average,
                        
                     }
                     );

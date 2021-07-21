@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UserTestsModels;
 using Serilog;
 using UserTestsDL;
+using UserTestsModels.Utility;
 
 namespace UserTestsBL
 {
@@ -46,9 +47,9 @@ namespace UserTestsBL
                 userStat.AverageWPM = ((userStat.AverageWPM * userStat.NumberOfTests) + typeTest.WPM) / (userStat.NumberOfTests + 1);
                 userStat.NumberOfTests += 1;
                 userStat = await _repo.AddUpdateStats(categoryId, userId, userStat);
-                await _repo.AddCategory(new Category() { Id = -2 });
+                await _repo.AddCategory(new Category() { Id = CategoryDefinitions.Average });
                 UserStat usAvg = new UserStat();
-                Category avgCat = await _repo.GetCategoryById(-2);
+                Category avgCat = await _repo.GetCategoryById(CategoryDefinitions.Average);
                 if (await _repo.GetSatUserCat(avgCat.Id, userId) != null) usAvg = await _repo.GetSatUserCat(avgCat.Id, userId);
                 else
                 {
@@ -82,6 +83,7 @@ namespace UserTestsBL
 
             }catch (Exception e)
             {
+                Log.Error(e.StackTrace);
                 Log.Error(e.Message);
                 Log.Error("Error occured in AddTest BL");
                 return null;

@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UserTestsDL;
 
-namespace UserTestsDL.Migrations
+namespace UserTestsDataLayer.Migrations
 {
     [DbContext(typeof(UserTestDBContext))]
-    [Migration("20210720182827_InitialMigration")]
+    [Migration("20210721204730_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,9 +24,7 @@ namespace UserTestsDL.Migrations
             modelBuilder.Entity("UserTestsModels.Category", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
