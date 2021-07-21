@@ -21,14 +21,7 @@ namespace UserTestsDL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
-                .Property(user => user.Id)
-                .ValueGeneratedOnAdd();
-            modelBuilder.Entity<User>()
-                .HasIndex(user => user.Auth0Id)
-                .IsUnique();
-            modelBuilder.Entity<Category>()
-                .Property(cat => cat.Id)
-                .ValueGeneratedOnAdd();
+                .HasKey(user => user.Auth0Id);
             modelBuilder.Entity<UserStat>()
                 .Property(userStat => userStat.Id)
                 .ValueGeneratedOnAdd();          

@@ -24,9 +24,8 @@ namespace UserTestsBL
         /// <summary>
         /// Get a user by his or her ID
         /// </summary>
-        /// <param name="id">ID of requested user</param>
+        /// <param name="userID">ID of requested user</param>
         /// <returns></returns>
-        Task<User> GetUser(int id);
         Task<User> GetUser(string userID);
     }
 }

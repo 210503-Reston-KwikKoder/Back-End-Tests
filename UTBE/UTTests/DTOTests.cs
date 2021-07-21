@@ -113,7 +113,6 @@ namespace UTTests
         public void testUserNameModel(){
             var dto = new UserNameModel();
             dto.UserName = "username";
-            dto.UserId = 112;
             dto.Revapoints = 23;
             dto.Name = "name";
 

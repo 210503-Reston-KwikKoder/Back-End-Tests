@@ -26,11 +26,6 @@ namespace UserTestsBL
             return await _repo.GetAllCategories();
         }
 
-        public async Task<Category> GetCategory(int name)
-        {
-            return await _repo.GetCategoryByName(name);
-        }
-
         public async Task<Category> GetCategoryById(int id)
         {
             return await _repo.GetCategoryById(id);

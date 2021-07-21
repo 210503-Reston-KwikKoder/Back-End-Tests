@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace UserTestsDL.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,8 +12,7 @@ namespace UserTestsDL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
@@ -24,14 +23,12 @@ namespace UserTestsDL.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     Auth0Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Revapoints = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Auth0Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -52,6 +49,33 @@ namespace UserTestsDL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserStats", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Goals",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    WPM = table.Column<double>(type: "float", nullable: false),
+                    GoalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Checked = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Goals", x => new { x.CategoryId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_Goals_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Goals_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Auth0Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,7 +106,7 @@ namespace UserTestsDL.Migrations
                 name: "UserStatCatJoins",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserStatId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -93,7 +117,7 @@ namespace UserTestsDL.Migrations
                         name: "FK_UserStatCatJoins_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
+                        principalColumn: "Auth0Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserStatCatJoins_UserStats_UserStatId",
@@ -104,15 +128,14 @@ namespace UserTestsDL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Goals_UserId",
+                table: "Goals",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TypeTests_UserStatId",
                 table: "TypeTests",
                 column: "UserStatId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_Auth0Id",
-                table: "Users",
-                column: "Auth0Id",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserStatCatJoins_UserId",
@@ -129,13 +152,16 @@ namespace UserTestsDL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Goals");
 
             migrationBuilder.DropTable(
                 name: "TypeTests");
 
             migrationBuilder.DropTable(
                 name: "UserStatCatJoins");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Users");

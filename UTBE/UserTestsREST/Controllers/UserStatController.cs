@@ -55,13 +55,13 @@ namespace UserTestsREST.Controllers
             User u = new User();
             u.Auth0Id = authId;
             u = await _userBL.GetUser(u.Auth0Id);
-            List<UserStatCatJoin> uscjs = await _userStatBL.GetUserStats(u.Id);
+            List<UserStatCatJoin> uscjs = await _userStatBL.GetUserStats(u.Auth0Id);
             List<StatModel> statModels = new List<StatModel>();
             foreach (UserStatCatJoin userStatCatJoin in uscjs)
             {
                 UserStat userStat = await _userStatBL.GetUserStatByUSId(userStatCatJoin.UserStatId);
-                Category category = await _categoryBL.GetCategoryById(userStatCatJoin.CategoryId);
-                StatModel statModel = new StatModel(u.Auth0Id, userStat.AverageWPM, userStat.AverageAccuracy, userStat.NumberOfTests, userStat.TotalTestTime, category.Name);
+               
+                StatModel statModel = new StatModel(u.Auth0Id, userStat.AverageWPM, userStat.AverageAccuracy, userStat.NumberOfTests, userStat.TotalTestTime, userStatCatJoin.CategoryId);
                 try
                 {
                     statModel.Wins = userStat.Wins;
@@ -93,8 +93,7 @@ namespace UserTestsREST.Controllers
             {
                 User u = new User();
                 u.Auth0Id = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                u = await _userBL.GetUser(u.Auth0Id);
-                List<TypeTest> typeTests = await _userStatBL.GetTypeTestsForUser(u.Id);
+                List<TypeTest> typeTests = await _userStatBL.GetTypeTestsForUser(u.Auth0Id);
                 List<TestStatOutput> typeTestOutputs = new List<TestStatOutput>();
                 foreach (TypeTest t in typeTests)
                 {
@@ -123,7 +122,7 @@ namespace UserTestsREST.Controllers
                 User u = new User();
                 u.Auth0Id = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 u = await _userBL.GetUser(u.Auth0Id);
-                List<Tuple<int, List<TypeTest>>> listTypeTests = await _userStatBL.GetTypeTestForUserByCategory(u.Id);
+                List<Tuple<int, List<TypeTest>>> listTypeTests = await _userStatBL.GetTypeTestForUserByCategory(u.Auth0Id);
                 List<List<TestStatCatOutput>> typeTestOutputs = new List<List<TestStatCatOutput>>();
                 foreach (Tuple<int, List<TypeTest>> tuple in listTypeTests)
                 {

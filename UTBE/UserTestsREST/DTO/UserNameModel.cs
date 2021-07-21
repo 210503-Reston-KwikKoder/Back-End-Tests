@@ -11,7 +11,6 @@ namespace UserTestsREST.DTO
         
         public string UserName { get; set; }
         public string Name { get; set; }
-        public int UserId { get; set; }
         public int Revapoints { get; set; }
     }
 }

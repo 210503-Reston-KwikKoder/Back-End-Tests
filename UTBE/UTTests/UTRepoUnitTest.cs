@@ -51,7 +51,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IRepo _repo = new Repo(context);
-                var test = await _repo.GetCategoryByName(-1);
+                var test = await _repo.GetCategoryById(-1);
                 Category expected = null;
                 Assert.Equal(test, expected);
             }
@@ -63,7 +63,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IRepo _repo = new Repo(context);
-                var test = await _repo.GetUserStats(-1);
+                var test = await _repo.GetUserStats("212");
                 List<UserStatCatJoin> expected = new List<UserStatCatJoin>();
                 Assert.Equal(test, expected);
                 Assert.True(test.Count == 0);
@@ -77,7 +77,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IRepo _repo = new Repo(context);
-                var target = 1;
+                var target = "abc";
                 var test = await _repo.GetUserStats(target);
                 Assert.True(test.Count == 1);
             }
@@ -89,7 +89,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IUserStatBL _bl = new UserStatBL(context);
-                var target = 1;
+                var target = "abc";
                 var test = await _bl.GetUserStats(target);
                 Assert.True(test.Count == 1);
             }
@@ -125,7 +125,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IUserStatBL _bl = new UserStatBL(context);
-                var userId = -1;
+                var userId = "test100";
                 var categoryId = -1;
                 TypeTest typeTest = new TypeTest()
                 {
@@ -143,7 +143,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IUserStatBL _bl = new UserStatBL(context);
-                var target = 1;
+                var target = "abc";
                 var test = await _bl.GetAvgUserStat(target);
                 var expected = 50;
                 Assert.Equal(expected, test.AverageWPM);
@@ -156,7 +156,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IUserStatBL _bl = new UserStatBL(context);
-                var target = 2;
+                var target = "def";
                 var test = await _bl.GetAvgUserStat(target);
                 var expected = 0;
                 Assert.Equal(expected, test.AverageWPM);
@@ -182,7 +182,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IRepo _repo = new Repo(context);
-                var target = -1;
+                var target = "32323";
                 var test = await _repo.GetTypeTestsForUser(target);
                 List<TypeTest> expected = new List<TypeTest>();
                 Assert.Equal(test, expected);
@@ -197,7 +197,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IRepo _repo = new Repo(context);
-                var target = -1;
+                var target = "-1";
                 var test = await _repo.GetTypeTestForUserByCategory(target);
                 List<Tuple<int, List<TypeTest>>> expected = new List<Tuple<int, List<TypeTest>>>();
                 Assert.Equal(test, expected);
@@ -210,7 +210,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IUserStatBL _bl = new UserStatBL(context);
-                var target = -1;
+                var target = "-1";
                 var test = await _bl.GetTypeTestForUserByCategory(target);
                 List<Tuple<int, List<TypeTest>>> expected = new List<Tuple<int, List<TypeTest>>>();
                 Assert.Equal(test, expected);
@@ -223,7 +223,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IRepo _repo = new Repo(context);
-                var target = 1;
+                var target = "abc";
                  List<Tuple<int, List<TypeTest>>> test = await _repo.GetTypeTestForUserByCategory(target);
                 Assert.True(test.Count == 1);
                 Assert.True(test[0].Item2.Count == 1);
@@ -236,7 +236,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IUserStatBL _bl = new UserStatBL(context);
-                var target = 1;
+                var target = "abc";
                  List<Tuple<int, List<TypeTest>>> test = await _bl.GetTypeTestForUserByCategory(target);
                 Assert.True(test.Count == 1);
                 Assert.True(test[0].Item2.Count == 1);
@@ -252,12 +252,12 @@ namespace UTTests
                 context.Users.AddRange(
                     new User
                     {
-                        Id = 1,
+                        
                         Auth0Id = "abc"
                     },
                     new User
                     {
-                        Id = 2,
+                        
                         Auth0Id = "def"
                     }
                 );
@@ -270,7 +270,7 @@ namespace UTTests
                         AverageWPM = 50,
                         UserStatCatJoin = new UserStatCatJoin
                         {
-                            UserId = 1,
+                            UserId = "abc",
                             UserStatId = 1,
                             CategoryId = 1
                         },
@@ -286,7 +286,7 @@ namespace UTTests
                     new Category
                     {
                         Id = 1,
-                        Name = 1
+                        
                     }
                 );
                 context.SaveChanges();
@@ -318,7 +318,7 @@ namespace UTTests
             {
                 IRepo _repo = new Repo(context);
                 context.Database.EnsureDeleted();
-                var target = -1;
+                var target = "-1";
                 var test = await _repo.GetTypeTestForUserByCategory(target);
                 List<Tuple<int, List<TypeTest>>> expected = null;
                 Assert.Equal(test, expected);
@@ -349,7 +349,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IRepo _repo = new Repo(context);
-                var list = await _repo.GetUserStats(2);
+                var list = await _repo.GetUserStats("gsdfsd");
 
                 Assert.Empty(list);
             }
@@ -360,7 +360,7 @@ namespace UTTests
             using (var context = new UserTestDBContext(options))
             {
                 IRepo _repo = new Repo(context);
-                var list = await _repo.GetTypeTestsForUser(2);
+                var list = await _repo.GetTypeTestsForUser("fgsdfgsdfgsdgsgdfgsdfgsd");
 
                 Assert.Empty(list);                
             }

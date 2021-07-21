@@ -49,10 +49,10 @@ namespace UTTests
                 var result = await controller.Get();
                 UserNameModel u = result.Value as UserNameModel;
 
-                int expected = 1;
+                int expected = 12;
 
                 Assert.IsType<UserNameModel>(result.Value);
-                Assert.Equal(u.UserId, expected);
+                Assert.Equal(u.Revapoints, expected);
             }
         }
 
@@ -117,20 +117,20 @@ namespace UTTests
                     new User
                     {
                         Auth0Id = "BZ",
-                        Id = 1,
+                        
                         Revapoints = 12
                     },
                     new User
                     {
                         Auth0Id = "test",
-                        Id = 2,
+                        
                         Revapoints = 22
                     },
 
                     new User
                     {
                         Auth0Id = "test1",
-                        Id = 3,
+                        
                         Revapoints = 22
                     }
 

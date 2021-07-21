@@ -25,26 +25,18 @@ namespace UTTests
         public void VerifyIdIsInt() 
         {
             User test = new User();
-            test.Id = 1;
+            test.Revapoints = 1;
             Type expected = typeof(int);
-            Assert.Equal(test.Id.GetType(), expected);
+            Assert.Equal(test.Revapoints.GetType(), expected);
         }
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        public void VerifyIdValidationShouldThrowException(int input)
-        {
-            User test = new User();
-            Assert.Throws<ValidationException>(() => test.Id = input);
-        }
-
+        
         [Fact]
         public void VerifyId() 
         {
             User test = new User();
             int expected = 1;
-            test.Id = expected;
-            Assert.Equal(expected, test.Id);
+            test.Revapoints = expected;
+            Assert.Equal(expected, test.Revapoints);
         }
 
 

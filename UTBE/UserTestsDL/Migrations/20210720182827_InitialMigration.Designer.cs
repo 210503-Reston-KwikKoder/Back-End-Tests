@@ -10,8 +10,8 @@ using UserTestsDL;
 namespace UserTestsDL.Migrations
 {
     [DbContext(typeof(UserTestDBContext))]
-    [Migration("20210702201715_GoalMigration")]
-    partial class GoalMigration
+    [Migration("20210720182827_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,9 +28,6 @@ namespace UserTestsDL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Name")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
@@ -41,8 +38,8 @@ namespace UserTestsDL.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Checked")
                         .HasColumnType("bit");
@@ -94,22 +91,13 @@ namespace UserTestsDL.Migrations
 
             modelBuilder.Entity("UserTestsModels.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<string>("Auth0Id")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Revapoints")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("Auth0Id")
-                        .IsUnique();
+                    b.HasKey("Auth0Id");
 
                     b.ToTable("Users");
                 });
@@ -155,8 +143,8 @@ namespace UserTestsDL.Migrations
                     b.Property<int>("UserStatId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");

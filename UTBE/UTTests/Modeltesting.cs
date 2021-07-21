@@ -12,15 +12,13 @@ namespace UTTests
         [Fact]
         public void newCategoryWithEmptyNameOrNameNotIntegerShouldFaild()
         {
-        //Given
-        Category category=new Category();
+            //Given
+            Category category=new Category();
         
-        //When
-        category.Id=90;
+           
         
-        
-        //Then
-        Assert.False( category.Name.GetType() !=typeof(int));
+            //Then
+            Assert.False( category.Id.GetType() !=typeof(int));
      
         }
 
@@ -31,15 +29,12 @@ namespace UTTests
         [Fact]
         public void newUserWithEmptyAuth0IdShouldFaild()
         {
-        //Given
-        User user=new User();
-        
-        //When
-        user.Id=9;
+            //Given
+            User user = new User();
         
         
-        //Then
-        Assert.False(user.Auth0Id=="");
+            //Then
+            Assert.False(user.Auth0Id=="");
      
         }
    

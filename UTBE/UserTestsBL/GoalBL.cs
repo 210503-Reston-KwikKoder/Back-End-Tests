@@ -20,12 +20,12 @@ namespace UserTestsBL
             return await _repo.AddGoal(g);
         }
 
-        public async Task<List<Goal>> GetAllGoals(int userId)
+        public async Task<List<Goal>> GetAllGoals(string userId)
         {
             return await _repo.GetGoalsForUser(userId);
         }
 
-        public async Task<Goal> GetGoal(int categoryId, int userId)
+        public async Task<Goal> GetGoal(int categoryId, string userId)
         {
             return await _repo.GetGoal(categoryId, userId);
         }
