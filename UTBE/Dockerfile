@@ -4,8 +4,8 @@ WORKDIR /app
 COPY *.sln .
 
 COPY UserTestsREST/*.csproj ./UserTestsREST/
-COPY UserTestsBL/*.csproj ./UserTestsBL/
-COPY UserTestsDL/*.csproj ./UserTestsDL/
+COPY UserTestsBL/*.csproj ./UserTestsBusinessLayer/
+COPY UserTestsDL/*.csproj ./UserTestsDataLayer/
 COPY UserTestsModels/*.csproj ./UserTestsModels/
 COPY UTTests/*.csproj ./UTTests/
 
