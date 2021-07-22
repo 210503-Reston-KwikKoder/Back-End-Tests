@@ -15,6 +15,6 @@ namespace UserTestsModels
         public Category Category { get; set; }
         public double WPM { get; set; }
         public DateTime GoalDate { get; set; }
-        public bool Checked { get; set; }
+        public DateTime PlacedDate { get; set; }
     }
 }

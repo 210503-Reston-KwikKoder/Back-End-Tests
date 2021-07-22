@@ -328,7 +328,6 @@ namespace GACDTests
                 await categoryBL.AddCategory(category);
                 await userBL.AddUser(user);
                 Goal goal = new Goal();
-                goal.Checked = false;
                 goal.CategoryId = 1;
                 goal.UserId = "test";
                 goal.GoalDate = DateTime.Now.AddDays(-7);
@@ -352,7 +351,6 @@ namespace GACDTests
                 await categoryBL.AddCategory(category);
                 await userBL.AddUser(user);
                 Goal goal = new Goal();
-                goal.Checked = false;
                 goal.CategoryId = 1;
                 goal.UserId = "test";
                 goal.GoalDate = DateTime.Now.AddDays(-7);

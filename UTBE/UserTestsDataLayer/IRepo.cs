@@ -114,6 +114,12 @@ namespace UserTestsDL
         /// </summary>
         /// <param name="userId">Id of user to find goals avaiable for user</param>
         /// <returns>List of claimable goals</returns>
-        Task<List<Goal>> GetGoalsForUser(string userId);
+        Task<List<Goal>> GetAllGoalsForUser(string userId);
+        /// <summary>
+        /// Deletes a goal from the database with the given category and user ID
+        /// </summary>
+        /// <param name="goal">Goal to be deleted</param>
+        /// <returns>goal deleted, null on error</returns>
+        Task<Goal> DeleteGoal(Goal goal);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserTestsModels;
+using UserTestsModels.Utility;
 
 namespace UserTestsBL
 {
@@ -23,10 +24,16 @@ namespace UserTestsBL
         /// <returns>goal or null on error</returns>
         Task<Goal> AddGoal(Goal g);
         /// <summary>
-        /// Gets a list of goals that are available to be claimed
+        /// Gets a list of goals for a user
         /// </summary>
         /// <param name="userId">user to get goals for</param>
         /// <returns>List of goals, empty if not found</returns>
         Task<List<Goal>> GetAllGoals(string userId);
+        /// <summary>
+        /// Claims all goals and removes old goals from the database
+        /// </summary>
+        /// <param name="userId">ID of user to claim goals for</param>
+        /// <returns>List of goals, whether they were claimed or successful</returns>
+        Task<List<GoalInformation>> ClaimGoals(string userId);
     }
 }

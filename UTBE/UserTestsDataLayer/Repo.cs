@@ -335,7 +335,6 @@ namespace UserTestsDL
                 Goal goal = await (from g in _context.Goals
                                    where g.CategoryId == categoryId
                                    && g.UserId == userId
-                                   && !g.Checked
                                    && g.GoalDate < DateTime.Now
                                    select g).SingleAsync();
                 return goal;
@@ -347,15 +346,13 @@ namespace UserTestsDL
             }
         }
 
-        public async Task<List<Goal>> GetGoalsForUser(string userId)
+        public async Task<List<Goal>> GetAllGoalsForUser(string userId)
         {
             try
             {
                 List<Goal> goals = await (from g in _context.Goals
                                    where g.UserId == userId
-                                   && !g.Checked
-                                   && g.GoalDate < DateTime.Now
-                                   select g).ToListAsync();
+                                   select g).AsNoTracking().ToListAsync();
                 return goals;
             }
             catch(Exception e)
@@ -363,6 +360,23 @@ namespace UserTestsDL
                 Log.Error(e.StackTrace);
                 Log.Error("Could not find any goals for the user");
                 return new List<Goal>();
+            }
+        }
+
+        public async Task<Goal> DeleteGoal(Goal g)
+        {
+            try
+            {
+                await Task.Run(() => { _context.Goals.Remove(g); });
+                await _context.SaveChangesAsync();
+                return g;
+            }
+            catch( Exception e)
+            {
+                Log.Error(e.Message);
+                Log.Error(e.StackTrace);
+                Log.Error("Error in DeleteGoal DL");
+                return null;
             }
         }
     }
