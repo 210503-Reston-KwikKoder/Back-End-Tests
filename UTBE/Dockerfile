@@ -5,7 +5,7 @@ COPY *.sln .
 
 COPY UserTestsREST/*.csproj ./UserTestsREST/
 COPY UserTestsBusinessLayer/*.csproj ./UserTestsBusinessLayer/
-COPY UserTestsDataLayer/L/*.csproj ./UserTestsDataLayer/
+COPY UserTestsDataLayer/*.csproj ./UserTestsDataLayer/
 COPY UserTestsModels/*.csproj ./UserTestsModels/
 COPY UTTests/*.csproj ./UTTests/
 
