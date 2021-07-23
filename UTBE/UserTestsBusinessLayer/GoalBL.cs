@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,15 @@ namespace UserTestsBL
         }
         public async Task<Goal> AddGoal(Goal g)
         {
+            if(await _repo.GetSatUserCat(g.CategoryId,g.UserId) != null)
+            {
+                UserStat userStat= await _repo.GetSatUserCat(g.CategoryId, g.UserId);
+
+                //check to see if user has already met goal
+                if (userStat.AverageWPM >= g.WPM) {
+                    Log.Error("Goal's WPM too low, returning 400");
+                    return null; }
+            }
             g.PlacedDate = DateTime.Now;
             return await _repo.AddGoal(g);
         }

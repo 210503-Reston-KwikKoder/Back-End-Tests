@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Serilog;
 using UserTestsModels;
 using System.Collections.Generic;
+using UserTestsModels.Utility;
 
 namespace GACDTests
 {
@@ -357,6 +358,75 @@ namespace GACDTests
                 await goalBL.AddGoal(goal);
                 int expected = 1;
                 int actual =(await goalBL.GetAllGoals("test")).Count;
+                Assert.Equal(expected, actual);
+            }
+        }
+        [Fact]
+        public async Task ClaimGoalsShouldNotBeEmpty()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                User user = new User();
+                user.Auth0Id = "test";
+                IUserBL userBL = new UserBL(context);
+                ICategoryBL categoryBL = new CategoryBL(context);
+                IUserStatBL userStatBL = new UserStatBL(context);
+                IGoalBL goalBL = new GoalBL(context);
+                Category category = new Category();
+                category.Id = 1;
+                await categoryBL.AddCategory(category);
+                await userBL.AddUser(user);
+                Goal goal = new Goal();
+                goal.CategoryId = 1;
+                goal.UserId = "test";
+                goal.GoalDate = DateTime.Now.AddDays(-7);
+                goal.PlacedDate = DateTime.Now.AddDays(-10);
+                await goalBL.AddGoal(goal);
+                TypeTest typeTest = new TypeTest();
+                typeTest.Date = DateTime.Now;
+                typeTest.NumberOfErrors = 1;
+                typeTest.NumberOfWords = 3;
+                typeTest.WPM = 30;
+                typeTest.TimeTaken = 5;
+                await userStatBL.AddTestUpdateStat("test", category.Id, typeTest);
+                List<GoalInformation> goalInformations = await goalBL.ClaimGoals("test");
+                int notExpected = 0;
+                int actual = goalInformations.Count;
+                Assert.NotEqual(notExpected, actual);
+            }
+        }
+        [Fact]
+        public async Task ClaimGoalsShouldClearOldGoals()
+        {
+            using (var context = new UserTestDBContext(options))
+            {
+                User user = new User();
+                user.Auth0Id = "test";
+                IUserBL userBL = new UserBL(context);
+                ICategoryBL categoryBL = new CategoryBL(context);
+                IUserStatBL userStatBL = new UserStatBL(context);
+                IGoalBL goalBL = new GoalBL(context);
+                Category category = new Category();
+                category.Id = 1;
+                await categoryBL.AddCategory(category);
+                await userBL.AddUser(user);
+                Goal goal = new Goal();
+                goal.CategoryId = 1;
+                goal.UserId = "test";
+                goal.GoalDate = DateTime.Now.AddDays(-7);
+                goal.PlacedDate = DateTime.Now.AddDays(-10);
+                goal.WPM = 10;
+                await goalBL.AddGoal(goal);
+                TypeTest typeTest = new TypeTest();
+                typeTest.Date = DateTime.Now;
+                typeTest.NumberOfErrors = 1;
+                typeTest.NumberOfWords = 3;
+                typeTest.WPM = 30;
+                typeTest.TimeTaken = 5;
+                await userStatBL.AddTestUpdateStat("test", category.Id, typeTest);
+                await goalBL.ClaimGoals("test");
+                int actual = (await goalBL.GetAllGoals("test")).Count;
+                int expected = 0;
                 Assert.Equal(expected, actual);
             }
         }

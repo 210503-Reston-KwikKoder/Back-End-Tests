@@ -64,6 +64,7 @@ namespace UserTestsREST
             services.AddScoped<IUserStatBL, UserStatBL>();
             services.AddScoped<IUserBL, UserBL>();
             services.AddScoped<ICategoryBL, CategoryBL>();
+            services.AddScoped<IGoalBL, GoalBL>();
             services.AddScoped<IRepo, Repo>();
             services.AddSingleton<IAuthorizationHandler, CheckScopeHandle>();
             services.AddControllers();

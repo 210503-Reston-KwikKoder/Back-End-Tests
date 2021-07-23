@@ -39,8 +39,4 @@
     <None Remove="Serilog.Sinks.Debug" />
     <None Remove="Serilog.Sinks.Graylog" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Utility\" />
-  </ItemGroup>
 </Project>

@@ -352,7 +352,7 @@ namespace UserTestsDL
             {
                 List<Goal> goals = await (from g in _context.Goals
                                    where g.UserId == userId
-                                   select g).AsNoTracking().ToListAsync();
+                                   select g).ToListAsync();
                 return goals;
             }
             catch(Exception e)
