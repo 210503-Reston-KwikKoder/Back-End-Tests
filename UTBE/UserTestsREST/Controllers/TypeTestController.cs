@@ -169,7 +169,7 @@ namespace UserTestsREST.Controllers
                 StringContent content = new StringContent(modelsJson, Encoding.UTF8, "application/json");
                 HttpClient httpClient = new HttpClient();
                 //call leaderboard put endpoint with new info
-                HttpResponseMessage result = await httpClient.PutAsync("http://20.69.69.228/lb/api/LB", content);
+                HttpResponseMessage result = await httpClient.PutAsync("http://20.69.69.228/lb/api/Leaderboard", content);
 
             }
 
